@@ -33,7 +33,8 @@ const registerUser=asynchandler(async(req,res,next)=>{
        });
 
      const token=user.generateAccessToken();  
-
+    
+     const createdUser=await User.findById(user._id).select("-password");
       const options={
         httpOnly:true,
         secure:true
@@ -42,12 +43,14 @@ const registerUser=asynchandler(async(req,res,next)=>{
      res.status(200)
      .cookie("accesstoken",token,options)
      .json(
-        new ApiResponse(200,{user,token
+        new ApiResponse(200,{createdUser,token
         },
             "user created successfully")
      )
 
-})
+});
+
+
 
 
 export{registerUser}
