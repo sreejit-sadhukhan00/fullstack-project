@@ -55,7 +55,8 @@ userSchema.methods.generateAccessToken=function(){
         username:this.username,
         fullname:this.fullname
     },
-    process.env.ACCESSTOKEN_SECRET
+    process.env.ACCESSTOKEN_SECRET,
+    {expiresIn:'24h'}
  )
  
 }

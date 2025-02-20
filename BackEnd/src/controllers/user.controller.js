@@ -5,8 +5,9 @@ import {ApiError} from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import {createUser} from "../services/user.service.js"
 import { validationResult } from "express-validator";
+import { BlacklistToken } from "../models/blacklisttoken.model.js";
 
-// USER REGISTER ROUTEE===>>>
+// USER REGISTER METHOD===>>>
 const registerUser=asynchandler(async(req,res,next)=>{
     // console.log("Received body:", req.body);
     const errors=validationResult(req);
@@ -51,7 +52,7 @@ const registerUser=asynchandler(async(req,res,next)=>{
 });
 
 
-// USER LOGIN ROUTE====>>>
+// USER LOGIN METHOD====>>>
 const loginUser=asynchandler(async(req,res,next)=>{
       const errors=validationResult(req);
       if(!errors.isEmpty()){
@@ -85,11 +86,22 @@ const loginUser=asynchandler(async(req,res,next)=>{
 })
 
 
-// GET USER PROFILE ROUTE=====>>>
+// GET USER PROFILE METHOD=====>>>
 const getUserProfile=asynchandler(async(req,res,next)=>{
    res
    .status(200)
    .json(new ApiResponse(200,req.user,"user info fetched successfully"));
+});
+
+// LOGOUT USER METHOD
+
+const logoutUser=asynchandler(async(req,res,next)=>{
+res.clearCookie('accesstoken');
+const token=req.cookies?.accesstoken || req.headers('Authorization')?.replace('Bearer ',"");
+ 
+     await BlacklistToken.create({token});
+
+    res.status(200).json(new ApiResponse(200,"Logged Out")) ;
 })
 
-export{registerUser,loginUser,getUserProfile}
+export{registerUser,loginUser,getUserProfile,logoutUser}

@@ -157,4 +157,37 @@ On success, the endpoint returns a JSON response similar to:
     "message": "STRING"
 }
 ```
-````
+
+# /users/logout Endpoint Documentation
+
+## Description
+Logs out the authenticated user by invalidating their access token.  
+On success, it returns a 200 status code and clears the access token cookie.
+
+## Request Method
+GET
+
+## Endpoint
+/users/logout
+
+## Required Data Format
+No request body is required. The request must include a valid access token in the cookies.
+
+## Status Codes
+- **200**: User logged out successfully.
+- **401**: Unauthorized access or missing/invalid token.
+
+## Notes
+- The endpoint requires authentication via a valid access token.
+- The access token is added to a blacklist to prevent further use.
+
+## Example Response
+
+On success, the endpoint returns a JSON response similar to:
+
+```json
+{
+    "statusCode": true,
+    "message": "User logged out successfully"
+}
+```
