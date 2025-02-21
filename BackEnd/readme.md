@@ -263,3 +263,64 @@ On success, the endpoint returns a JSON response similar to:
     "message": "captain register successfully"
 }
 ```
+
+# /captain/login Endpoint Documentation
+
+## Description
+Logs in an existing captain by validating their credentials.  
+On success, it returns a 200 status code along with a captain object and an access token.
+
+## Request Method
+POST
+
+## Endpoint
+/captain/login
+
+## Required Data Format
+The request body should be sent as JSON with the following structure:
+```json
+{
+  "email": "string (valid email format)",
+  "password": "string (min 8 characters)"
+}
+```
+
+## Status Codes
+- **200**: Captain logged in successfully.
+- **400**: Validation errors or incorrect credentials.
+- **401**: Missing required fields.
+
+## Notes
+- The endpoint validates the presence of `email` and `password`.
+- An HTTP-only cookie named `accesstoken` is set on success.
+
+## Example Response
+
+On success, the endpoint returns a JSON response similar to:
+
+```json
+{
+    "statusCode": true,
+    "data": {
+        "loggedInUser": {
+            "fullname": {
+                "firstname": "STRING",
+                "lastname": "STRING"
+            },
+            "_id": "STRING",
+            "email": "STRING",
+            "vehicle": {
+                "color": "STRING",
+                "plate": "STRING",
+                "capacity": "NUMBER",
+                "vehicleType": "STRING"
+            },
+            "createdAt": "STRING",
+            "updatedAt": "STRING",
+            "__v": number
+        },
+        "token": "STRING"
+    },
+    "message": "captain logged in successfully"
+}
+```

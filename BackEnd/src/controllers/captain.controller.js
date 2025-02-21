@@ -5,7 +5,7 @@ import { validationResult } from "express-validator";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-// Register User====>
+// Register CAPTAIN====>
 const registerCaptain=asynchandler(async(req,res)=>{
     const errors=validationResult(req);
     if(!errors.isEmpty()){
@@ -47,4 +47,33 @@ const registerCaptain=asynchandler(async(req,res)=>{
       )
 });
 
-export{registerCaptain}
+// LOGIN CAPTAIN======>
+
+  const loginCaptain=asynchandler(async(req,res,next)=>{
+    const errors=validationResult(req);
+    if(!errors.isEmpty()){
+      return res.status(401).json({errors:errors.array()});
+    }
+
+    const{email,password}=req.body;
+    const captain=await Captain.findOne({email});
+    if(!captain){
+      throw new ApiError(401,'Invalid email or password');
+    }
+
+    const isPasswordcorrect=await captain.isPasswordCorrect(password);
+    if(!isPasswordcorrect){
+      throw new ApiError(401,'Invalid User Or Email');
+    }
+
+    const loggedInUser=await Captain.findById(captain._id).select("-password");
+    const token=captain.generateAccessToken();
+
+    const options={
+      httpOnly:true,
+      secure:true
+    }
+
+    res.status(200).cookie('accesstoken',token,options).json(new ApiResponse(200,{loggedInUser,token},'captain logged in successfully'));
+  })
+export{registerCaptain,loginCaptain}
