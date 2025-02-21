@@ -28,6 +28,7 @@ const userSchema=new mongoose.Schema(
     password:{
         type:String,
         required:[true,'password is required'],
+        minlength:[8,'password must be 8 character long']
     },
     socketId:{
         type:String,

@@ -26,9 +26,9 @@ connectDb();
 
 // ROUTE IMPORTS 
  import userRouter from "./routes/user.routes.js"
-
+ import captainRouter from "./routes/captain.routes.js"
 
 //  ROUTE DECLARATION
   app.use('/users',userRouter);
- 
+  app.use('/captain',captainRouter);
 export {app}

@@ -102,6 +102,8 @@ const token=req.cookies?.accesstoken || req.headers('Authorization')?.replace('B
      await BlacklistToken.create({token});
 
     res.status(200).json(new ApiResponse(200,"Logged Out")) ;
-})
+});
+
+
 
 export{registerUser,loginUser,getUserProfile,logoutUser}
