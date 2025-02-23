@@ -96,10 +96,11 @@ const getUserProfile=asynchandler(async(req,res,next)=>{
 // LOGOUT USER METHOD
 
 const logoutUser=asynchandler(async(req,res,next)=>{
-res.clearCookie('accesstoken');
+
 const token=req.cookies?.accesstoken || req.headers('Authorization')?.replace('Bearer ',"");
- 
-     await BlacklistToken.create({token});
+await BlacklistToken.create({token});
+res.clearCookie('accesstoken');
+     
 
     res.status(200).json(new ApiResponse(200,"Logged Out")) ;
 });

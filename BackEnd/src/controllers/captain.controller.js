@@ -4,6 +4,7 @@ import createCaptain from "../services/captain.service.js";
 import { validationResult } from "express-validator";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { BlacklistToken } from "../models/blacklisttoken.model.js";
 
 // Register CAPTAIN====>
 const registerCaptain=asynchandler(async(req,res)=>{
@@ -76,4 +77,21 @@ const registerCaptain=asynchandler(async(req,res)=>{
 
     res.status(200).cookie('accesstoken',token,options).json(new ApiResponse(200,{loggedInUser,token},'captain logged in successfully'));
   })
-export{registerCaptain,loginCaptain}
+
+//Get captain profile====>
+  const getCaptainProfile=asynchandler(async(req,res)=>{
+    const captain=req.captain;
+    return res.status(200).json(new ApiResponse(200,captain,"Captain's data fetched successfully"))
+  })
+
+
+// LOGOUT CAPTAIN====>
+
+  const logoutcaptain=asynchandler(async(req,res)=>{
+    const token =req.cookies?.accesstoken || req.headers('accesstoken')?.replace('Bearer ',"");
+    await BlacklistToken.create({token});
+       res.clearCookie('accesstoken');
+       return res.status(200).json(new ApiResponse(200,{},'captain logged out successfully'));
+  })
+
+  export{registerCaptain,loginCaptain,getCaptainProfile,logoutcaptain}

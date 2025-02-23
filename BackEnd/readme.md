@@ -324,3 +324,89 @@ On success, the endpoint returns a JSON response similar to:
     "message": "captain logged in successfully"
 }
 ```
+
+# /captain/profile Endpoint Documentation
+
+## Description
+Fetches the profile information of the authenticated captain.  
+On success, it returns a 200 status code along with the captain object.
+
+## Request Method
+GET
+
+## Endpoint
+/captain/profile
+
+## Required Data Format
+No request body is required. The request must include a valid access token in the cookies.
+
+## Status Codes
+- **200**: Captain profile fetched successfully.
+- **401**: Unauthorized access or missing/invalid token.
+
+## Notes
+- The endpoint requires authentication via a valid access token.
+
+## Example Response
+
+On success, the endpoint returns a JSON response similar to:
+
+```json
+{
+    "statusCode": true,
+    "data": {
+        "captain": {
+            "fullname": {
+                "firstname": "STRING",
+                "lastname": "STRING"
+            },
+            "_id": "STRING",
+            "email": "STRING",
+            "vehicle": {
+                "color": "STRING",
+                "plate": "STRING",
+                "capacity": "NUMBER",
+                "vehicleType": "STRING"
+            },
+            "createdAt": "STRING",
+            "updatedAt": "STRING",
+            "__v": number
+        }
+    },
+    "message": "Captain's data fetched successfully"
+}
+```
+
+# /captain/logout Endpoint Documentation
+
+## Description
+Logs out the authenticated captain by invalidating their access token.  
+On success, it returns a 200 status code and clears the access token cookie.
+
+## Request Method
+GET
+
+## Endpoint
+/captain/logout
+
+## Required Data Format
+No request body is required. The request must include a valid access token in the cookies.
+
+## Status Codes
+- **200**: Captain logged out successfully.
+- **401**: Unauthorized access or missing/invalid token.
+
+## Notes
+- The endpoint requires authentication via a valid access token.
+- The access token is added to a blacklist to prevent further use.
+
+## Example Response
+
+On success, the endpoint returns a JSON response similar to:
+
+```json
+{
+    "statusCode": true,
+    "message": "captain logged out successfully"
+}
+```

@@ -1,9 +1,11 @@
 import express from "express"
 const router = express.Router(); 
 import {body} from "express-validator"
-import { registerCaptain,loginCaptain } from "../controllers/captain.controller.js";
+import { registerCaptain,loginCaptain,getCaptainProfile ,logoutcaptain} from "../controllers/captain.controller.js";
+import { get } from "mongoose";
+import { authCaptain } from "../Middlewares/auth.middleware.js";
 
-
+// register route====>
 router.post('/register',[
     body('email').isEmail().withMessage('Invalid Email'),
     body('fullname.firstname').isLength({min:3}).withMessage('First name is required'),
@@ -15,9 +17,16 @@ router.post('/register',[
 ],registerCaptain
 );
 
+// login route===>>>
 router.post('/login',[
     body('email').isEmail().withMessage('Invalid Email'),
     body('password').isLength({min:8}).withMessage('Password must be 8 characters long')
 ],loginCaptain);
 
+// get profile routeee===>>
+router.get('/profile',authCaptain,getCaptainProfile);
+
+// logout rout====>
+
+router.get('/logout',authCaptain,logoutcaptain);
 export default router;
