@@ -1,29 +1,56 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
  import "@fontsource/poppins"; // Import Poppins font
- 
+ import {CaptainDataContext} from '../context/Captaincontext'
+import axios from "axios";
+
 function CaptainSignup() {
 const [firstname, setfirstname] = useState('')
   const [lastname, setlastname] = useState('')
   const [email, setEmail] = useState('')
-  const[password,setPassword]=useState('')
-    const [captain,setcaptain]=useState({})
-  
-  const submitHandler=(e)=>{
+   const[password,setPassword]=useState('')
+  const[color,setcolor]=useState('')
+  const[plate,setplate]=useState('')
+  const[capacity,setcapacity]=useState('')
+  const[vehicleType,setvehicleType]=useState('')
+   const navigate=useNavigate();
+    
+  const{captain,setcaptain}=useContext(CaptainDataContext);
+  const submitHandler=async(e)=>{
     e.preventDefault();
-   
-    setcaptain({
-      fullName:{
-        firstname:firstname,
+      
+   const newCaptain={
+    fullname:{
+      firstname:firstname,
         lastname:lastname
       },
       email:email,
-      password:password
-    })
+      password:password,
+      vehicle: {
+    color: color,
+    plate: plate,
+    capacity:capacity,
+    vehicleType: vehicleType
+  }
+      
+    }
+     
+    const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/captain/register`,newCaptain);
+    
+    if(response.status===200){
+      const data=response.data.data;
+      localStorage.setItem('token',data.token);
+      setcaptain(data); 
+     navigate('/captain-home');
+    }
     setfirstname('');
     setlastname('');
     setEmail('');
     setPassword('');
+    setcapacity('');
+    setcolor('');
+    setplate('');
+    setvehicleType('');
 }
 
 
@@ -82,8 +109,57 @@ const [firstname, setfirstname] = useState('')
               onChange={(e)=>setPassword(e.target.value)}
               placeholder="Password"
               className="bg-gray-100 rounded-md px-4 py-2 w-full text-lg placeholder-gray-500 focus:ring focus:ring-gray-600 outline-none"
-            />
+             />
+              
+              <h3 className="text-xl mb-2 font-semibold mt-4">Vehicle Information</h3>
+
+<div className="flex gap-4  ">
+
+<input
+  required
+  onChange={(e)=>setcolor(e.target.value)}
+  value={color}
+  type="text"
+  placeholder="vehicle color"
+  className="bg-gray-100 rounded-md px-3 py-2 w-full text-lg placeholder-gray-500 focus:ring focus:ring-gray-600 outline-none placeholder:text-lg"
+/>
+ 
   
+<input
+  required
+  onChange={(e)=>setplate(e.target.value)}
+  value={plate}
+  type="text"
+  placeholder="Vehicle plate"
+  className="bg-gray-100 rounded-md px-3 py-2 w-full text-lg placeholder-gray-500 focus:ring focus:ring-gray-600 outline-none placeholder:text-lg"
+/>
+</div>
+<div className="flex gap-4 mt-6 ">
+
+<input
+  required
+  onChange={(e)=>setcapacity(e.target.value)}
+  value={capacity}
+  type="Number"
+  placeholder="vehicle capacity"
+  className="bg-gray-100 rounded-md px-3 py-2 w-full text-lg placeholder-gray-500 focus:ring focus:ring-gray-600 outline-none placeholder:text-lg"
+/>
+ 
+  
+<select
+  required
+  onChange={(e)=>setvehicleType(e.target.value)}
+  value={vehicleType}
+  className="bg-gray-100 rounded-md px-3 py-2 w-full text-lg placeholder-gray-500 focus:ring focus:ring-gray-600 outline-none placeholder:text-lg"
+> 
+ <option value="" disabled>Select Vehicle</option>
+ <option value="car">Car</option>
+ <option value="motorcycle">Motorcycle</option>
+ <option value="auto">Auto</option>
+</select>
+</div>
+
+
             <button type="submit" className="mt-6 py-2 px-4 bg-black text-white rounded-md w-full font-semibold cursor-pointer mb-3 hover:bg-gray-800 transition">
               Sign In
             </button>

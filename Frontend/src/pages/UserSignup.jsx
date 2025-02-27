@@ -26,12 +26,8 @@ function UserSignup() {
     email:email,
     password:password
   };
-
-  console.log(`${import.meta.env.VITE_BASE_URL}`);
   
   const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`,newUser);
-   console.log(response.data.data);
-   
 
   if(response.status===200){
     const data=response.data.data;
