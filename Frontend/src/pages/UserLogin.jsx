@@ -1,28 +1,36 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
- import "@fontsource/poppins"; // Import Poppins font
- 
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "@fontsource/poppins"; // Import Poppins font
+import {UserDataContext} from "../context/Usercontext"
+import axios from "axios";
 
 function UserLogin() {
 
 const [email, setEmail] = useState('')
-const[password,setPassword]=useState('')
-  const [user,setUser]=useState({})
+const[password,setPassword]=useState('');
+  const { user, setUser } = useContext(UserDataContext)
+const navigate=useNavigate();
 
-const submitHandler=(e)=>{
+
+
+const submitHandler=async(e)=>{
   e.preventDefault();
  
-  setUser({
+ const Userdata={
     email:email,password:password
-  })
-  console.log(user);
+  }
+  const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`,Userdata);
+  
+  if(response.data.statusCode===true){
+    const data=response.data.data;
+    setUser(data);
+    
+    localStorage.setItem('token',data.token);
+    navigate('/home')
+  }
   
   setEmail('');
-  setPassword('');
-
- 
-  
-  
+  setPassword(''); 
 }
 
   return (

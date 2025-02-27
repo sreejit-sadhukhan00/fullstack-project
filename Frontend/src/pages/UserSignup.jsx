@@ -1,32 +1,50 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
  import "@fontsource/poppins"; // Import Poppins font
- 
+ import axios from 'axios';
+ import {UserDataContext} from "../context/Usercontext"
+
+
 function UserSignup() {
   
   const [firstname, setfirstname] = useState('')
   const [lastname, setlastname] = useState('')
   const [email, setEmail] = useState('')
   const[password,setPassword]=useState('')
-    const [user,setUser]=useState({})
-  
-  const submitHandler=(e)=>{
+    
+    const { user, setUser } = useContext(UserDataContext)
+
+    const navigate=useNavigate();
+  const submitHandler=async(e)=>{
     e.preventDefault();
    
-    setUser({
-      fullName:{
-        firstname:firstname,
-        lastname:lastname
-      },
-      email:email,
-      password:password
-    })
-    console.log(user);
+   const newUser={
+    fullname:{
+      firstname:firstname,
+      lastname:lastname
+    },
+    email:email,
+    password:password
+  };
+
+  console.log(`${import.meta.env.VITE_BASE_URL}`);
+  
+  const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`,newUser);
+   console.log(response.data.data);
+   
+
+  if(response.status===200){
+    const data=response.data.data;
+    setUser(data.createdUser);
+     localStorage.setItem('token',data.token);
+    navigate('/home')
+  }
     setfirstname('');
     setlastname('');
     setEmail('');
     setPassword('');
 }
+
   
 
     return (

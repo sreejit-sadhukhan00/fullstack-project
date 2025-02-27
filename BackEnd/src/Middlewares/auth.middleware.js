@@ -17,7 +17,7 @@ const authUser=asynchandler(async(req,res,next)=>{
     const isblackListToken=await BlacklistToken.findOne({token});
 
     if(isblackListToken){
-        return res.status(402).json(new ApiResponse(402,'unauthorized access'));
+        return res.status(401).json(new ApiResponse(401,'unauthorized access'));
     }
 
 

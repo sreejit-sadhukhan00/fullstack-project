@@ -97,12 +97,17 @@ const getUserProfile=asynchandler(async(req,res,next)=>{
 
 const logoutUser=asynchandler(async(req,res,next)=>{
 
-const token=req.cookies?.accesstoken || req.headers('Authorization')?.replace('Bearer ',"");
+const token=req.cookies?.accesstoken || req.headers.authorization?.replace('Bearer ',"");
+
+if (!token) {
+  return res.status(400).json(new ApiResponse(400, "No token provided"));
+}
+
 await BlacklistToken.create({token});
 res.clearCookie('accesstoken');
      
 
-    res.status(200).json(new ApiResponse(200,"Logged Out")) ;
+  res.status(200).json(new ApiResponse(200,"Logged Out")) ;
 });
 
 
