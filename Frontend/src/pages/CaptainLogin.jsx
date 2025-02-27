@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
 function CaptainLogin() {
-  const [email, setEmail] = useState('')
-  const[password,setPassword]=useState('')
-    const [user,setUser]=useState({})
+  const [email, setEmail] = useState('');
+  const[password,setPassword]=useState('');
+    const [user,setUser]=useState({});
   
   const submitHandler=(e)=>{
     e.preventDefault();
