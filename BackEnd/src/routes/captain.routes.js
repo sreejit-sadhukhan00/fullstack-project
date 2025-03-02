@@ -29,4 +29,5 @@ router.get('/profile',authCaptain,getCaptainProfile);
 // logout rout====>
 
 router.get('/logout',authCaptain,logoutcaptain);
+
 export default router;
