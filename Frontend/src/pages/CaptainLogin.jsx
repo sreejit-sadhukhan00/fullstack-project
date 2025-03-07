@@ -22,8 +22,7 @@ function CaptainLogin() {
       setcaptain(data.loggedInUser);
 
       localStorage.setItem('token',data.token);
-      navigate('/captain-home')
-      console.log(captain);
+      navigate('/captain-home');
       
     }
   
