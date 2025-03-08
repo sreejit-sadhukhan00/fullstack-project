@@ -88,7 +88,7 @@ const registerCaptain=asynchandler(async(req,res)=>{
 // LOGOUT CAPTAIN====>
 
   const logoutcaptain=asynchandler(async(req,res)=>{
-    const token =req.cookies?.accesstoken || req.headers('accesstoken')?.replace('Bearer ',"");
+    const token =req.cookies?.accesstoken || req.headers['authorization']?.replace('Bearer ',"");
     await BlacklistToken.create({token});
        res.clearCookie('accesstoken');
        return res.status(200).json(new ApiResponse(200,{},'captain logged out successfully'));

@@ -45,7 +45,7 @@ const [isloading,setisloading]=useState(true);
 
     if(isloading){
         return(
-        <div>Loading...</div>        )
+        <div>Loading...</div>)
     }
      
 
