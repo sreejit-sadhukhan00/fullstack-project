@@ -20,7 +20,7 @@ function WaitForDriver({image="",setwaitfordriver}) {
         
         <div className='flex justify-between pr-8 pl-8 items-center w-full'>
         <div>
-        <img src="download.png" alt="" width={80} className='rounded-full  ml-8' />
+        <img src="download.png" alt="" width={80} className='rounded-full ' />
         </div>
         <div className='text-right '>
           <h1 className='text-xl font-semibold'>Driver name</h1>
@@ -58,6 +58,9 @@ function WaitForDriver({image="",setwaitfordriver}) {
            </div>
            </div>
     </div>
+
+
+
     </div>
  
     </div>
