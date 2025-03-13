@@ -4,13 +4,13 @@ import CaptainDetails from '../components/CaptainDetails';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import CaptainPopUp from '../components/CaptainPopUp';
+import ConfirmedRidePopup from '../components/ConfirmedRidePopup';
+
+
 function Captainhome() {
   const [captainpopup, setcaptainpopup] = useState(true);
-  const [confirmridepopup, setconfirmridepopup] = useState(true);
+  const [confirmridepopup, setconfirmridepopup] = useState(false);
  
-
-
-
   const captainpopuppanelref=useRef(null);
   const confirmridepopuppanelref=useRef(null);
 // gsap animation
@@ -45,6 +45,39 @@ useGSAP(() => {
     });
   }
 }, [captainpopup]);
+
+// GSAP animations 2
+useGSAP(() => {
+  const screenHeight = window.innerHeight;
+
+  // let targetHeight;
+  // if (screenHeight <= 480) targetHeight = "65%"; // Small phones
+  // else if (screenHeight <= 768) targetHeight = "70%"; // Tablets
+  // else if (screenHeight <= 1024) targetHeight = "60%"; // Small laptops
+  // else targetHeight = "55%"; // Large screens
+
+  if (confirmridepopup) {
+    gsap.to(confirmridepopuppanelref.current, {
+      height: '100%',
+      opacity: 1,
+      padding: 24,
+      duration: 0.3,
+      ease: "power2.out",
+      overflow: "hidden",
+      transform: "translateY(0%)",
+    });
+  } else {
+    gsap.to(confirmridepopuppanelref.current, {
+      height: 0,
+      opacity: 0,
+      padding: 0,
+      duration: 0.3,
+      ease: "power2.in",
+      transform: "translateY(100%)",
+      clearProps: "overflow", // Ensure no scroll issues stay
+    });
+  }
+}, [confirmridepopup]);
 
 
 
@@ -85,14 +118,14 @@ useGSAP(() => {
   h-[65%] sm:h-[70%] md:h-[60%] lg:h-[55%] 
   lg:fixed lg:w-[30%] lg:left-[70%] left-0 overflow-hidden'
       >
-         <CaptainPopUp setcaptainpopup={setcaptainpopup}/>
+         <CaptainPopUp setcaptainpopup={setcaptainpopup}  setconfirmridepopup={setconfirmridepopup}/>
     </div> 
     {/* popup after acceptance of ride */}
-    <div ref={confirmridepopuppanelref} className='fixed bottom-0 z-[10] bg-[#eee] w-full py-4 
-  h-[65%] sm:h-[70%] md:h-[60%] lg:h-[55%] 
+    <div ref={confirmridepopuppanelref} className='fixed bottom-0 z-[10] bg-[#eee] w-full py-4 h-screen
+   
   lg:fixed lg:w-[30%] lg:left-[70%] left-0 overflow-hidden'
       >
-         <CaptainPopUp setconfirmridepopup={setconfirmridepopup} setcaptainpopup={setcaptainpopup}/>
+         <ConfirmedRidePopup setconfirmridepopup={setconfirmridepopup} setcaptainpopup={setcaptainpopup} />
     </div> 
         </div>
     </div>
@@ -100,3 +133,5 @@ useGSAP(() => {
 }
 
 export default Captainhome;
+
+// h-[65%] sm:h-[70%] md:h-[60%] lg:h-[55%]

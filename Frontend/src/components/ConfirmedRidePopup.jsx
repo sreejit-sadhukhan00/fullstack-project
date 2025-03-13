@@ -1,9 +1,9 @@
 import React from 'react'
-import "@fontsource/poppins"; 
+import { Link } from 'react-router-dom';
 
-function CaptainPopUp({setcaptainpopup,setconfirmridepopup}) {
+function ConfirmedRidePopup({setconfirmridepopup,setcaptainpopup}) {
   return (
-    <div className='font-poppins'>
+    <div className=''>
         <h5 className='text-center cursor-pointer'
     onClick={(e)=>{
         e.stopPropagation();
@@ -12,7 +12,11 @@ function CaptainPopUp({setcaptainpopup,setconfirmridepopup}) {
     >
     <i className="ri-arrow-down-wide-line text-2xl font-bold text-gray-400"></i>
     </h5>
-    <h3 className='text-2xl font-semibold mb-1 ml-6'>New Ride Available</h3>
+     <div className='flex ml-6 items-center'>
+     <img src="https://cdn-icons-png.flaticon.com/512/2344/2344011.png" alt=""  width={40} className='font-bold'/>
+     <h3 className='text-2xl font-semibold mb-1 ml-6'>Confirm to Begin the Ride</h3>
+     </div>
+      
     <div className='flex items-center justify-between mr-4 ml-4  rounded-lg p-2 '>
         <div className='flex items-center justify-center gap-3'>
             <img src="https://cdn.pixabay.com/photo/2015/03/04/22/35/avatar-659652_640.png" alt="" className='h-12 rounded-full object-cover'/>
@@ -52,25 +56,19 @@ function CaptainPopUp({setcaptainpopup,setconfirmridepopup}) {
            </div>
     </div>
 {/* buttons */}
-    <div className='w-full flex  justify-evenly items-center'>
+    <Link to='/captain-riding'
+    className='min-w-2xl text-center bg-green-500 p-1 rounded-3xl  cursor-pointer text-xl text-white font-medium lg:min-w-md'>
+      Confirm
+    </Link>
     <button 
     onClick={(e)=>{
       e.stopPropagation();
-      console.log("heyy");
-      setconfirmridepopup(true);
-  }}
-    className=' bg-green-500 p-2 px-26 rounded-3xl  cursor-pointer text-xl text-white font-medium lg:min-w-md'>
-      Accept
-    </button>
-    <button 
-    onClick={(e)=>{
-      e.stopPropagation();
+      setconfirmridepopup(false);
       setcaptainpopup(false);
   }}
-    className='  bg-[#D71611] p-2 px-26 rounded-3xl  cursor-pointer text-xl text-white font-medium lg:min-w-md'>
-      Ignore
+    className='min-w-2xl mt-2 bg-[#D71611] p-1 rounded-3xl  cursor-pointer text-xl text-white font-medium lg:min-w-md'>
+      Cancel
     </button>
-    </div>
 
 
     </div>
@@ -78,4 +76,4 @@ function CaptainPopUp({setcaptainpopup,setconfirmridepopup}) {
   )
 }
 
-export default CaptainPopUp
+export default ConfirmedRidePopup

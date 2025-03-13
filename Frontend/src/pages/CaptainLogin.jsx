@@ -15,22 +15,25 @@ function CaptainLogin() {
    const  createdcaptain={
       email:email,password:password
     }
-  const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/captain/login`,createdcaptain);
+  try {
+    const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/captain/login`,createdcaptain);
     if(response.status===200){
       const data=response.data.data;
-
+     console.log(data);
+     
       setcaptain(data.loggedInUser);
 
       localStorage.setItem('token',data.token);
       navigate('/captain-home');
       
     }
-  
-
     setEmail('');
     setPassword('');
+  } catch (error) {
+    console.log(error.message);
+  }
  }
-  
+
     return (
       <div className="p-10 flex flex-col justify-between lg:w-1/3 mx-auto my-auto lg:mt-6 h-screen font-poppins">
         <div>

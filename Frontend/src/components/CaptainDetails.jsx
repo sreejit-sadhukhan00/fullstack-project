@@ -18,7 +18,7 @@ function CaptainDetails() {
             </div>
            
             {/* Driver's performance stats (hours online, speed, trips) */}
-            <div className='flex justify-evenly mt-12 items-start bg-zinc-200 p-3 rounded-3xl'>
+            <div className='flex justify-evenly mt-12 items-start bg-[#FEC925] p-3 rounded-3xl font-extrabold'>
               <div className='text-center '>
                 <i className="text-2xl font-light ri-time-line"></i>
                 <h5 className='text-lg font-medium text-gray-700'>10.2</h5>
