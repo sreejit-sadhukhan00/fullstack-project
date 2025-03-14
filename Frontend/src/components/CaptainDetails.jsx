@@ -1,5 +1,4 @@
 import React from 'react'
-import CaptainPopUp from './CaptainPopUp'
 
 function CaptainDetails() {
   return (

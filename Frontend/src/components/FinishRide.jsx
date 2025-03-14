@@ -1,24 +1,28 @@
 import React from 'react'
-import "@fontsource/poppins"; 
+import { Link } from 'react-router-dom';
 
-function CaptainPopUp({setcaptainpopup,setconfirmridepopup}) {
+function FinishRide({setfinishRidePanel}) {
   return (
-    <div className='font-poppins'>
+    <div className=''>
         <h5 className='text-center cursor-pointer'
     onClick={(e)=>{
         e.stopPropagation();
-        setcaptainpopup(false);
+        setfinishRidePanel(false);
     }}
     >
     <i className="ri-arrow-down-wide-line text-2xl font-bold text-gray-400"></i>
     </h5>
-    <h3 className='text-2xl font-semibold mb-1 ml-6'>New Ride Available</h3>
+     <div className='flex ml-6 items-center'>
+     <img src="https://cdn-icons-png.flaticon.com/512/2344/2344011.png" alt=""  width={40} className='font-bold'/>
+     <h3 className='text-2xl font-semibold mb-1 ml-6'>Finish the Ride</h3>
+     </div>
+      
     <div className='flex items-center justify-between mr-4 ml-4  rounded-lg p-2 '>
         <div className='flex items-center justify-center gap-3'>
             <img src="https://cdn.pixabay.com/photo/2015/03/04/22/35/avatar-659652_640.png" alt="" className='h-12 rounded-full object-cover'/>
             <h2 className='text-lg font-medium'>Sayan Patel</h2>
         </div>
-        <h5 className='text-base text-gray-500'>2.2km Away</h5>
+        <h5 className='text-xl text-gray-400'>Reached Destination</h5>
     </div>
     <div className='flex gap-2 justify-between items-center flex-col'>
     <img src="" alt="" width={220} />
@@ -51,31 +55,24 @@ function CaptainPopUp({setcaptainpopup,setconfirmridepopup}) {
            </div>
            </div>
     </div>
-{/* buttons */}
-    <div className='max-w-md flex flex-col  gap-4 justify-evenly items-center lg:gap-2 lg:mb-10'>
-    <button 
-    onClick={(e)=>{
-      e.stopPropagation();
-      console.log("heyy");
-      setconfirmridepopup(true);
-  }}
-    className=' bg-green-500 p-2 px-26 rounded-3xl  cursor-pointer text-xl text-white font-medium lg:min-w-md'>
-      Accept
-    </button>
-    <button 
-    onClick={(e)=>{
-      e.stopPropagation();
-      setcaptainpopup(false);
-  }}
-    className='  bg-[#D71611] p-2 px-26 rounded-3xl  cursor-pointer text-xl text-white font-medium lg:min-w-md'>
-      Ignore
-    </button>
-    </div>
+{/* form for otp */}
 
+{/* buttons */}
+    <div className='flex flex-col'>
+        
+         <Link to='/captain-home'
+    className='min-w-2xl text-center bg-green-500 p-1 rounded-3xl  cursor-pointer text-xl text-white font-medium lg:min-w-md'>
+      Finish Ride
+    </Link>
+ 
+ <p className='text-sm text-gray-400'>Click on finish ride if you have recieved the payment</p>
+       
+   
+    </div>
 
     </div>
     </div>
   )
 }
 
-export default CaptainPopUp
+export default FinishRide

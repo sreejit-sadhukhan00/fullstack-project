@@ -1,8 +1,39 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import CaptainDetails from '../components/CaptainDetails'
-
+import FinishRide from '../components/FinishRide';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 function CaptainRiding() {
+
+const [finishRidePanel, setfinishRidePanel] = useState(false)
+
+const finishRidePanelref=useRef();
+  // animation
+  useGSAP(() => {
+
+    if (finishRidePanel) {
+      gsap.to(finishRidePanelref.current, {
+        height: '100%',
+        opacity: 1,
+        padding: 24,
+        duration: 0.3,
+        ease: "power2.out",
+        overflow: "hidden",
+        transform: "translateY(0%)",
+      });
+    } else {
+      gsap.to(finishRidePanelref.current, {
+        height: 0,
+        opacity: 0,
+        padding: 0,
+        duration: 0.3,
+        ease: "power2.in",
+        transform: "translateY(100%)",
+        clearProps: "overflow", // Ensure no scroll issues stay
+      });
+    }
+  }, [finishRidePanel]);
+  
   return (
     <div>
         
@@ -37,15 +68,24 @@ function CaptainRiding() {
                 <button className='w-[40%] h-fit bg-green-500 p-2 px-4 
                  rounded-3xl cursor-pointer text-xl text-white 
                  font-medium text-center 
-                 lg:w-[50%] xl:w-[50%]'>Complete Ride</button>
+                 lg:w-[50%] xl:w-[50%]'
+                 onClick={()=>{
+                  setfinishRidePanel(true);
+                 }}
+                 >Complete Ride</button>
           </div>
 
           </div>
           
         </div>
     </div>
+    <div ref={finishRidePanelref} className='fixed bottom-0 z-[10] bg-[#eee] w-full py-4 h-screen
+   
+  lg:fixed lg:w-[30%] lg:left-[70%] left-0 overflow-hidden'
+      >
+         <FinishRide setfinishRidePanel={setfinishRidePanel} />
+    </div> 
     </div>
   )
 }
-
-export default CaptainRiding
+export default CaptainRiding;

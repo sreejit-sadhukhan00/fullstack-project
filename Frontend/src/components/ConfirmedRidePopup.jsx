@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 
 function ConfirmedRidePopup({setconfirmridepopup,setcaptainpopup}) {
+
+const submitHandler=(e)=>{
+   e.preventDefault();
+}
+
+const [otp, setotp] = useState()
+
   return (
     <div className=''>
         <h5 className='text-center cursor-pointer'
@@ -55,8 +62,25 @@ function ConfirmedRidePopup({setconfirmridepopup,setcaptainpopup}) {
            </div>
            </div>
     </div>
+{/* form for otp */}
+
 {/* buttons */}
-    <Link to='/captain-riding'
+    <div className=''>
+         <form onSubmit={(e)=>{
+              submitHandler(e);
+         }} className='flex flex-col justify-center items-center md:w-full'>
+        <input type="text" placeholder='Enter Your OTP'
+        value={otp}
+        onChange={(e)=>{
+            setotp(e.target.value)
+            console.log(e.target.value);
+            
+        }}
+         className='bg-gray-100 rounded-md px-4 py-2 max-w-min text-lg placeholder-gray-500 focus:ring focus:ring-blue-600 outline-none 
+          border-1 mb-6 cursor-pointer font-mono
+           '
+        />
+         <Link to='/captain-riding'
     className='min-w-2xl text-center bg-green-500 p-1 rounded-3xl  cursor-pointer text-xl text-white font-medium lg:min-w-md'>
       Confirm
     </Link>
@@ -69,7 +93,11 @@ function ConfirmedRidePopup({setconfirmridepopup,setcaptainpopup}) {
     className='min-w-2xl mt-2 bg-[#D71611] p-1 rounded-3xl  cursor-pointer text-xl text-white font-medium lg:min-w-md'>
       Cancel
     </button>
+         </form>
 
+       
+   
+    </div>
 
     </div>
     </div>

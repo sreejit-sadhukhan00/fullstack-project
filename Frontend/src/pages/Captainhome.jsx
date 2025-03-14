@@ -48,13 +48,6 @@ useGSAP(() => {
 
 // GSAP animations 2
 useGSAP(() => {
-  const screenHeight = window.innerHeight;
-
-  // let targetHeight;
-  // if (screenHeight <= 480) targetHeight = "65%"; // Small phones
-  // else if (screenHeight <= 768) targetHeight = "70%"; // Tablets
-  // else if (screenHeight <= 1024) targetHeight = "60%"; // Small laptops
-  // else targetHeight = "55%"; // Large screens
 
   if (confirmridepopup) {
     gsap.to(confirmridepopuppanelref.current, {
