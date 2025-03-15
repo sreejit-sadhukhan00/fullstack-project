@@ -2,7 +2,6 @@ import express from "express"
 const router = express.Router(); 
 import {body} from "express-validator"
 import { registerCaptain,loginCaptain,getCaptainProfile ,logoutcaptain} from "../controllers/captain.controller.js";
-import { get } from "mongoose";
 import { authCaptain } from "../Middlewares/auth.middleware.js";
 
 // register route====>

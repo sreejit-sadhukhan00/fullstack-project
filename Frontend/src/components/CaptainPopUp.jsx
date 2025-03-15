@@ -52,14 +52,14 @@ function CaptainPopUp({setcaptainpopup,setconfirmridepopup}) {
            </div>
     </div>
 {/* buttons */}
-    <div className='max-w-md flex flex-col  gap-4 justify-evenly items-center lg:gap-2 lg:mb-10'>
+    <div className='  flex   gap-4 justify-center items-evenly lg:gap-2 lg:mb-10'>
     <button 
     onClick={(e)=>{
       e.stopPropagation();
       console.log("heyy");
       setconfirmridepopup(true);
   }}
-    className=' bg-green-500 p-2 px-26 rounded-3xl  cursor-pointer text-xl text-white font-medium lg:min-w-md'>
+    className=' bg-green-500 p-2 px-16 rounded-3xl  cursor-pointer text-lg text-white font-medium '>
       Accept
     </button>
     <button 
@@ -67,7 +67,7 @@ function CaptainPopUp({setcaptainpopup,setconfirmridepopup}) {
       e.stopPropagation();
       setcaptainpopup(false);
   }}
-    className='  bg-[#D71611] p-2 px-26 rounded-3xl  cursor-pointer text-xl text-white font-medium lg:min-w-md'>
+    className='  bg-[#D71611] p-2 px-16 rounded-3xl  cursor-pointer text-lg text-white font-medium '>
       Ignore
     </button>
     </div>

@@ -65,7 +65,7 @@ function FinishRide({setfinishRidePanel}) {
       Finish Ride
     </Link>
  
- <p className='text-sm text-gray-400'>Click on finish ride if you have recieved the payment</p>
+ <p className='mt-2 ml-2 text-sm text-gray-400'>Click on finish ride if you have recieved the payment</p>
        
    
     </div>
