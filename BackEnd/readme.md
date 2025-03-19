@@ -809,3 +809,107 @@ On success, the endpoint returns a JSON response similar to:
     "message": "fetched"
 }
 ```
+
+# /rides/create-ride Endpoint Documentation
+
+## Description
+Creates a new ride by accepting ride details and generating an OTP for the ride.  
+On success, it returns a 200 status code along with the ride object.
+
+## Request Method
+POST
+
+## Endpoint
+/rides/create-ride
+
+## Required Data Format
+The request body should be sent as JSON with the following structure:
+```json
+{
+  "pickup": "string (min 4 characters)",
+  "destination": "string (min 4 characters)",
+  "vehicletype": "string (one of 'auto', 'car', 'bike')"
+}
+```
+
+## Status Codes
+- **200**: Ride created successfully.
+- **400**: Validation errors or missing required fields.
+- **500**: Internal server error.
+
+## Notes
+- The endpoint validates the presence of `pickup`, `destination`, and `vehicletype`.
+- The OTP is generated and stored in the database but not returned in the response for security reasons.
+
+## Example Response
+
+On success, the endpoint returns a JSON response similar to:
+
+```json
+{
+    "statusCode": 200,
+    "data": {
+        "user": "STRING",
+        "pickup": "STRING",
+        "destination": "STRING",
+        "fare": "NUMBER",
+        "status": "STRING",
+        "duration": "NUMBER",
+        "distance": "NUMBER",
+        "paymentId": "STRING",
+        "orderId": "STRING",
+        "signature": "STRING",
+        "_id": "STRING",
+        "createdAt": "STRING",
+        "updatedAt": "STRING",
+        "__v": "NUMBER"
+    },
+    "message": "Ride Created Successfully"
+}
+```
+
+# /rides/get-fare Endpoint Documentation
+
+## Description
+Calculates the fare for a ride based on the provided pickup and destination locations.  
+On success, it returns a 200 status code along with the calculated fare.
+
+## Request Method
+GET
+
+## Endpoint
+/rides/get-fare
+
+## Required Data Format
+The request should be sent with the following query parameters:
+```json
+{
+  "pickup": "string (min 4 characters)",
+  "destination": "string (min 4 characters)"
+}
+```
+
+## Status Codes
+- **200**: Fare calculated successfully.
+- **400**: Validation errors or missing required fields.
+- **500**: Internal server error.
+
+## Notes
+- The endpoint validates the presence of `pickup` and `destination`.
+- The fare is calculated based on predefined rates for different vehicle types.
+
+## Example Response
+
+On success, the endpoint returns a JSON response similar to:
+
+```json
+{
+    "statusCode": 200,
+    "data": {
+        "auto": "NUMBER",
+        "car": "NUMBER",
+        "bike": "NUMBER"
+    },
+    "message": "Fare Calculated Successfully"
+}
+```

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import 'remixicon/fonts/remixicon.css';
@@ -7,6 +7,7 @@ import VehiclePanel from '../components/VehiclePanel';
 import ConfirmedVehicle from '../components/ConfirmedVehicle';
 import LookingForDriver from '../components/LookingForDriver';
 import WaitForDriver from '../components/WaitForDriver';
+import axios from 'axios';
 
 function Home() {
   const [pickup, setpickup] = useState('');
@@ -19,9 +20,11 @@ function Home() {
   const [vehicleFound, setvehicleFound] = useState(false);
   const [image, setimage] = useState();
   const [waitfordriver, setwaitfordriver] = useState(false);
-
-
-
+  const [picklocations, setpicklocations] = useState([]);
+  const [fare, setfare] = useState({});
+  const [vehicleType, setvehicleType] = useState(null)
+  const [ destinationSuggestions, setDestinationSuggestions ] = useState([]);
+  const [activefield,setactivefield]=useState(null);
   const confirmedvehiclepanelref=useRef(null);
   const vehiclepanelref=useRef(null);
   const vehiclefoundref=useRef(null);
@@ -30,6 +33,44 @@ function Home() {
   const submitHandler = (e) => {
     e.preventDefault();
   };
+
+// to handle the pickup suggetions
+    const handlePickupchange=async (e)=>{
+      try {
+        const response=await axios.get(`${import.meta.env.VITE_BASE_URL}/maps/get-suggetions`,{params:{input:e.target.value},
+          headers:{
+            Authorization:`Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        if(response.status===200){
+          setpicklocations(response.data.data);
+        }
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+// to handle the pickup suggetions
+    const handledestinationchange=async (e)=>{
+      
+      try {
+        const response=await axios.get(`${import.meta.env.VITE_BASE_URL}/maps/get-suggetions`,{params:{input:e.target.value},
+          headers:{
+            Authorization:`Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        if(response.status===200){
+          setDestinationSuggestions(response.data.data);
+        }
+         
+         
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+
+
 // 1st animation
   useGSAP(() => {
     if (inputboxpos) {
@@ -77,8 +118,6 @@ function Home() {
       });
     }
   }, [confirmedvehiclepanel]);
-
-
   // 3rd animation
   useGSAP(() => {
     if (vehiclepanel) {
@@ -147,6 +186,43 @@ useGSAP(() => {
 }, [waitfordriver]);
 
 
+// to find trip and fare calculator
+async function findtrip(e){
+  e.stopPropagation();
+  setvehiclepanel(true);
+  setinputboxpos(0);
+    
+  const response=await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/get-fare`,
+    
+    {params:{pickup,destination},
+    headers:{
+      Authorization:`Bearer ${localStorage.getItem('token')}`
+    }
+    
+    }
+    
+     
+  );
+  console.log(response.data.data);
+ setfare(response.data.data);
+  
+}
+
+// to create ride on the click on any car in vehicle panel
+
+async function createRide(vehicletype) {
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/create-ride`, { pickup, destination, vehicletype }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    console.log(response.data.data);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
   return (
@@ -169,7 +245,7 @@ useGSAP(() => {
       <div className='absolute top-0 h-screen w-full flex flex-col justify-end lg:relative lg:w-[30%] lg:h-full lg:flex lg:justify-center lg:bg-white '>
 
         {/* Form Container */}
-        <div className='h-[30%] lg:h-auto p-8 bg-white relative  '>
+        <div className='h-[30%] lg:h-auto p-8  bg-white relative  '>
           {/* Close Icon */}
           <h5 ref={panelcloseref} className='absolute top-6 left-1 text-xl font-semibold opacity-0 transition-opacity duration-300'>
             <i className="ri-arrow-down-wide-line cursor-pointer"
@@ -183,31 +259,49 @@ useGSAP(() => {
             <input className='bg-[#eee] px-12 py-2 text-base rounded-lg w-full mb-2 placeholder-gray-500 focus:ring focus:ring-gray-700 outline-none cursor-pointer'
               type="text" placeholder='Add a pickup location'
               value={pickup}
-              onChange={(e) => setpickup(e.target.value)}
+              onChange={(e) => {
+                 setpickup(e.target.value);
+                 handlePickupchange(e);
+              }}
               onClick={(e) => {
                 e.stopPropagation();
-                console.log(inputboxpos);
-                setinputboxpos(1)
+                setinputboxpos(1);
+                setactivefield('pickup');
                 setvehiclepanel(false)
               }}
             />
             <input className='bg-[#eee] px-12 py-2 text-base rounded-lg mt-4 w-full placeholder-gray-500 focus:ring focus:ring-gray-700 outline-none cursor-pointer'
               type="text" placeholder='Enter your destination'
               value={destination}
-              onChange={(e) => setdestination(e.target.value)}
-              onClick={() =>{
+              onChange={(e) =>{
+                 setdestination(e.target.value)
+                 handledestinationchange(e);
+                }}
+              onClick={(e) =>{
+                setactivefield('destination');
                 e.stopPropagation();
                 setinputboxpos(1)
                 setvehiclepanel(false)
               }}
             />
           </form>
-
+       <button
+       onClick={(e)=>{
+        findtrip(e);
+       }}
+       className=' mt-5 bg-[#1F2020] py-1  px-6 relative r-0 rounded-xl w-full cursor-pointer text-2xl text-white font-medium'>
+        Find ride
+        </button>
         </div>
 
         {/* Location Search Panel (Hidden by default) */}
-        <div className='bg-white lg:bg-white ' ref={destionoptionpanel} style={{ height: 0, opacity: 0,overflow:'hidden' }}>
-          <LocationSearchPanel setinputboxpos={setinputboxpos} setvehiclepanel={setvehiclepanel} />
+        <div className='bg-white lg:bg-white  ' ref={destionoptionpanel} style={{ height: 0, opacity: 0,overflow:'hidden' }}>
+          <LocationSearchPanel setinputboxpos={setinputboxpos} setvehiclepanel={setvehiclepanel}
+          suggetions={activefield==='pickup'?picklocations : destinationSuggestions}
+          activefield={activefield}
+          setpickup={setpickup}
+          setdestination={setdestination}
+          />
         </div>
 
       </div>
@@ -216,17 +310,30 @@ useGSAP(() => {
       <div ref={vehiclepanelref} className='fixed bottom-0 z-[10] bg-white w-full px-3 py-6 lg:absolute lg:w-[30%] '
       >
         
-         <VehiclePanel setconfirmedvehiclepanel={setconfirmedvehiclepanel} setimage={setimage} setvehiclepanel={setvehiclepanel}/>
+         <VehiclePanel setconfirmedvehiclepanel={setconfirmedvehiclepanel} setimage={setimage} setvehiclepanel={setvehiclepanel} fare={fare} 
+         setvehicleType={setvehicleType}
+         />
 
     </div>   
       <div ref={confirmedvehiclepanelref} className='fixed bottom-0 z-[10] min-h-[60%] bg-white w-full px-1 py-6 lg:absolute lg:w-[30%] '
       >
-         <ConfirmedVehicle image={image} setvehiclepanel={setvehiclepanel} setconfirmedvehiclepanel={setconfirmedvehiclepanel} setvehicleFound={setvehicleFound}/>
+         <ConfirmedVehicle image={image} setvehiclepanel={setvehiclepanel} setconfirmedvehiclepanel={setconfirmedvehiclepanel} setvehicleFound={setvehicleFound}
+         createRide={createRide}
+         vehicleType={vehicleType}
+         fare={fare}
+         pickup={pickup}
+          destination={destination}
+         />
 
     </div>   
       <div ref={vehiclefoundref} className='fixed bottom-0 z-[10] min-h-[60%] bg-white w-full px-1 py-6 lg:absolute lg:w-[30%] '
       >
-         <LookingForDriver image={image} setvehicleFound={setvehicleFound}/>
+         <LookingForDriver image={image} setvehicleFound={setvehicleFound}
+         pickup={pickup}
+         destination={destination}
+         fare={fare}
+         vehicleType={vehicleType}
+         />
 
     </div>   
       <div ref={waitingfordriveref}  className='fixed bottom-0 z-[10] min-h-[60%] bg-white w-full px-1 py-6 lg:absolute lg:w-[30%] '
@@ -240,6 +347,7 @@ useGSAP(() => {
 
     </div>
   );
+
 }
 
 export default Home;

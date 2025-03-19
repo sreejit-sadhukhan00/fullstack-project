@@ -1,6 +1,8 @@
 import React from 'react'
 
-function LookingForDriver({image="",setvehicleFound}) {
+function LookingForDriver({image="",setvehicleFound,
+  pickup,destination,vehicleType,fare
+}) {
   return (
     <div>
     <h5 className='text-center cursor-pointer'
@@ -23,7 +25,7 @@ function LookingForDriver({image="",setvehicleFound}) {
            <i className="ri-map-pin-line text-xl font-bold"></i>
            <div>
             <h3 className='text-lg font-medium text-zinc-700'>567-43/A</h3>
-            <p className='text-base text-zinc-600 -mt-1'>Lorem ipsum dolor sit amet.</p>
+            <p className='text-base text-zinc-600 -mt-1'>{pickup}</p>
            </div>
            </div>
            {/* user current location */}
@@ -32,7 +34,7 @@ function LookingForDriver({image="",setvehicleFound}) {
            <i className="ri-map-pin-5-fill text-xl font-bold"></i>
            <div>
             <h3 className='text-lg font-medium text-zinc-700'>567-43/A</h3>
-            <p className='text-base text-zinc-600 -mt-1'>Lorem ipsum dolor sit amet.</p>
+            <p className='text-base text-zinc-600 -mt-1'>{destination}</p>
            </div>
            </div>
            <div
@@ -40,7 +42,7 @@ function LookingForDriver({image="",setvehicleFound}) {
            >
             <i className="ri-cash-line text-[#6bd192] text-2xl font-bold"></i>
            <div>
-            <h3 className='text-lg font-medium text-zinc-700'>₹198.20</h3>
+            <h3 className='text-lg font-medium text-zinc-700'>₹{fare[vehicleType]}</h3>
             <p className='text-base text-zinc-600 -mt-1'>Cash only</p>
            </div>
            </div>

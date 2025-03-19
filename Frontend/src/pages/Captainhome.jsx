@@ -8,7 +8,7 @@ import ConfirmedRidePopup from '../components/ConfirmedRidePopup';
 
 
 function Captainhome() {
-  const [captainpopup, setcaptainpopup] = useState(true);
+  const [captainpopup, setcaptainpopup] = useState(false);
   const [confirmridepopup, setconfirmridepopup] = useState(false);
  
   const captainpopuppanelref=useRef(null);

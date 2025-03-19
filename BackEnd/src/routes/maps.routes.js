@@ -17,7 +17,8 @@ router.get('/get-distance-time',
 )
 
 router.get('/get-suggetions',
-    query('input').isString().isLength({min:3}),
+    query('input').isString().isLength({min:1}),
     authUser,getAutoComplete
 )
+
 export default router;

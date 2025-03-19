@@ -1,6 +1,7 @@
 import React from 'react'
 
-function VehiclePanel({setvehiclepanel,setconfirmedvehiclepanel,setimage}) {
+function VehiclePanel({setvehiclepanel,setconfirmedvehiclepanel,setimage,fare,setvehicleType}) {
+  
   return (
     <div><h5 className='text-center cursor-pointer'
     onClick={(e)=>{
@@ -14,6 +15,7 @@ function VehiclePanel({setvehiclepanel,setconfirmedvehiclepanel,setimage}) {
 
     {/* Each vehicle box */}
 <div onClick={()=>{
+  setvehicleType('car');
   setconfirmedvehiclepanel(true);
   setimage(download.png);
 }}  className='flex items-center justify-between p-3 border-2 border-transparent active:border-black  rounded-xl lg:flex lg:items-center lg:gap-4 mb-2 cursor-pointer '>
@@ -30,12 +32,13 @@ function VehiclePanel({setvehiclepanel,setconfirmedvehiclepanel,setimage}) {
 </div>
 
 {/* Right Section: Price */}
-<h2 className='text-xl font-bold '>₹193</h2>
+<h2 className='text-xl font-bold '>₹{fare.car}</h2>
 </div>
 
 {/* Each vehicle box */}
 <div 
 onClick={()=>{
+  setvehicleType('bike');
   setconfirmedvehiclepanel(true);
   setimage('https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1649231091/assets/2c/7fa194-c954-49b2-9c6d-a3b8601370f5/original/Uber_Moto_Orange_312x208_pixels_Mobile.png');
 }}
@@ -53,12 +56,13 @@ className='flex items-center justify-between p-3 border-2 border-transparent act
 </div>
 
 {/* Right Section: Price */}
-<h2 className='text-xl font-bold '>₹45</h2>
+<h2 className='text-xl font-bold '>₹{fare.bike}</h2>
 </div>
 
 {/* Each vehicle box */}
 <div
 onClick={()=>{
+  setvehicleType('auto');
   setconfirmedvehiclepanel(true);
   setimage('https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1648431773/assets/1d/db8c56-0204-4ce4-81ce-56a11a07fe98/original/Uber_Auto_558x372_pixels_Desktop.png')
 }}
@@ -76,7 +80,7 @@ className='flex items-center justify-between p-3 border-2 border-transparent act
 </div>
 
 {/* Right Section: Price */}
-<h2 className='text-xl font-bold '>₹76.12</h2>
+<h2 className='text-xl font-bold '>₹{fare.auto}</h2>
 </div>
 
 

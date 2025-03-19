@@ -1,7 +1,6 @@
 import React from 'react'
 
 function WaitForDriver({image="",setwaitfordriver}) {
-  console.log(image);
   
   return (
     <div>

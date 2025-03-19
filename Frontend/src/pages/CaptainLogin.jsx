@@ -25,6 +25,7 @@ function CaptainLogin() {
       navigate('/captain-home');
       
     }
+    console.log(captain);
     setEmail('');
     setPassword('');
   } catch (error) {
