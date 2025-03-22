@@ -10,7 +10,7 @@ import { Captain } from "../models/captain.model.js";
 const authUser=asynchandler(async(req,res,next)=>{
     try {
         const token=req.cookies?.accesstoken || req.header("Authorization")?.replace("Bearer ","");
-    
+      console.log(token);
         if(!token){
             return res.status(401).json(new ApiResponse(401,"Unauthorized Access"));
         }
@@ -30,6 +30,7 @@ const authUser=asynchandler(async(req,res,next)=>{
             throw new ApiError(401,"Invalid Accesstoken");
         }
         req.user=user;
+        console.log(user);
         next();
     } catch (error) {
         throw new ApiError(400,error?.message ||"Something Went Wrong")

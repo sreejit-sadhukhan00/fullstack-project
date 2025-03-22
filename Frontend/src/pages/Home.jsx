@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect,useContext } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import 'remixicon/fonts/remixicon.css';
@@ -8,6 +8,8 @@ import ConfirmedVehicle from '../components/ConfirmedVehicle';
 import LookingForDriver from '../components/LookingForDriver';
 import WaitForDriver from '../components/WaitForDriver';
 import axios from 'axios';
+import { SocketContext } from '../context/SocketContext.jsx';
+import {UserDataContext} from "../context/Usercontext"
 
 function Home() {
   const [pickup, setpickup] = useState('');
@@ -29,17 +31,33 @@ function Home() {
   const vehiclepanelref=useRef(null);
   const vehiclefoundref=useRef(null);
   const waitingfordriveref=useRef(null);
+  const { sendMessage, receiveMessage,socket }=useContext(SocketContext);
+ const { user} = useContext(UserDataContext);
 
   const submitHandler = (e) => {
     e.preventDefault();
   };
 
+
+
+  // io handle sendmessage
+  useEffect(()=>{
+    sendMessage('join',{
+      userId:user._id,
+      userType:'user'
+    });
+  },[user]);
+
+  socket.on('ride-confirmed',ride=>{
+    console.log('ride confirmed',ride);
+    setwaitfordriver(true);
+  })
 // to handle the pickup suggetions
     const handlePickupchange=async (e)=>{
       try {
         const response=await axios.get(`${import.meta.env.VITE_BASE_URL}/maps/get-suggetions`,{params:{input:e.target.value},
           headers:{
-            Authorization:`Bearer ${localStorage.getItem('token')}`
+            Authorization:`Bearer ${localStorage.getItem('userToken')}`
           }
         });
         if(response.status===200){
@@ -56,7 +74,7 @@ function Home() {
       try {
         const response=await axios.get(`${import.meta.env.VITE_BASE_URL}/maps/get-suggetions`,{params:{input:e.target.value},
           headers:{
-            Authorization:`Bearer ${localStorage.getItem('token')}`
+            Authorization:`Bearer ${localStorage.getItem('userToken')}`
           }
         });
         if(response.status===200){
@@ -196,29 +214,26 @@ async function findtrip(e){
     
     {params:{pickup,destination},
     headers:{
-      Authorization:`Bearer ${localStorage.getItem('token')}`
+      Authorization:`Bearer ${localStorage.getItem('userToken')}`
     }
     
     }
     
      
   );
-  console.log(response.data.data);
  setfare(response.data.data);
   
 }
 
-// to create ride on the click on any car in vehicle panel
+// to create ride on the click on any car in vehicle panel and then confirm
 
 async function createRide(vehicletype) {
   try {
     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/create-ride`, { pickup, destination, vehicletype }, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${localStorage.getItem('userToken')}`
       }
     });
-
-    console.log(response.data.data);
   } catch (error) {
     console.log(error);
   }

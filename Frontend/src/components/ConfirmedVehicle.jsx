@@ -56,7 +56,7 @@ function ConfirmedVehicle(
         </button>
       </div>
 
-    </div>
+    </div>                     
   )
 }
 

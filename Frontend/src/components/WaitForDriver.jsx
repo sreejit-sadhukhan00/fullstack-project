@@ -13,7 +13,7 @@ function WaitForDriver({image="",setwaitfordriver}) {
     <i className="ri-arrow-down-wide-line text-3xl font-bold text-gray-400"></i>
     </h5>
     
-    <h3 className='text-2xl font-semibold mb-5'>Meet Driver At The Loaction</h3>
+    <h3 className='text-2xl font-semibold mb-5'>Meet Driver At Pick-up Loaction</h3>
     
     <div className='flex gap-2 justify-between items-center flex-col'>
         

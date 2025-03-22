@@ -1,10 +1,13 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState,useContext,useEffect} from 'react'
+import axios from "axios";
 import { Link } from 'react-router-dom';
 import CaptainDetails from '../components/CaptainDetails';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import CaptainPopUp from '../components/CaptainPopUp';
 import ConfirmedRidePopup from '../components/ConfirmedRidePopup';
+import { SocketContext } from '../context/SocketContext';
+import { CaptainDataContext } from '../context/Captaincontext';
 
 
 function Captainhome() {
@@ -13,6 +16,55 @@ function Captainhome() {
  
   const captainpopuppanelref=useRef(null);
   const confirmridepopuppanelref=useRef(null);
+  const {captain}=useContext(CaptainDataContext);
+   const { sendMessage, socket,setSocket,receiveMessage }=useContext(SocketContext);
+   const [ride, setride] = useState(null)
+ // socketio handling
+
+ useEffect(()=>{
+     sendMessage('join',{
+       userId:captain._id,
+       userType:'captain'
+     });
+
+    const updatelocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          sendMessage('update-location-captain', {
+            userId: captain._id,
+            location:{
+            ltd: position.coords.latitude,
+            lng: position.coords.longitude,
+          }});
+        });
+      }
+    };
+     const locationInterval=setInterval(updatelocation, 10000);
+     updatelocation();
+    // return () => clearInterval(locationInterval);
+ },[]);
+
+  socket.on('new-ride',(data)=>{
+    const parsedData = JSON.parse(data);
+     setride(parsedData);
+   setcaptainpopup(true);
+    });
+
+   
+async function confirmRide(){
+  console.log(ride._id,localStorage.getItem('captainToken'));
+  
+  const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/confirm`,{
+       rideId:ride._id
+  },{
+    headers:{
+      Authorization:`Bearer ${localStorage.getItem('captainToken')}`
+    }
+  })
+  console.log(response.data);
+  
+}    
+
 // gsap animation
 useGSAP(() => {
   const screenHeight = window.innerHeight;
@@ -75,8 +127,6 @@ useGSAP(() => {
 
 
 
-
-
   return (
      <div className='lg:overflow-hidden'>
         {/* Top Navbar with logo and logout icon */}
@@ -111,14 +161,20 @@ useGSAP(() => {
   h-[65%] sm:h-[70%] md:h-[60%] lg:h-[55%] 
   lg:fixed lg:w-[30%] lg:left-[70%] left-0 overflow-hidden'
       >
-         <CaptainPopUp setcaptainpopup={setcaptainpopup}  setconfirmridepopup={setconfirmridepopup}/>
+         <CaptainPopUp setcaptainpopup={setcaptainpopup} 
+          setconfirmridepopup={setconfirmridepopup}
+          ride={ride}
+          confirmRide={confirmRide}
+         />
     </div> 
     {/* popup after acceptance of ride */}
     <div ref={confirmridepopuppanelref} className='fixed bottom-0 z-[10] bg-[#eee] w-full py-4 h-screen
    
   lg:fixed lg:w-[30%] lg:left-[70%] left-0 overflow-hidden'
       >
-         <ConfirmedRidePopup setconfirmridepopup={setconfirmridepopup} setcaptainpopup={setcaptainpopup} />
+         <ConfirmedRidePopup setconfirmridepopup={setconfirmridepopup} setcaptainpopup={setcaptainpopup}
+        
+         />
     </div> 
         </div>
     </div>
@@ -126,5 +182,3 @@ useGSAP(() => {
 }
 
 export default Captainhome;
-
-// h-[65%] sm:h-[70%] md:h-[60%] lg:h-[55%]

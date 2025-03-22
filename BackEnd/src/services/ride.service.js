@@ -56,13 +56,14 @@ function getOtp(length) {
 export const createRide=async({
     user,pickup,destination,vehicletype
 })=>{
-    
+     console.log(user,pickup,destination,vehicletype);
    if(!user || !pickup || !destination || !vehicletype){
        throw new Error('user, pickup, destination, vehicleType is required');
    }
 
    const fare=await getFare({pickup,destination});
-   
+      console.log(fare);
+      
    const ride=await Ride.create({
     user,pickup,destination,
     otp:getOtp(5),
@@ -72,3 +73,25 @@ export const createRide=async({
    return ride;
 }
 
+
+export const confirmRide=async(rideId,captainId)=>{
+    if(!rideId){
+        throw new Error('Ride Id is Required');
+    }
+  
+  const ride=  await Ride.findOneAndUpdate({
+        _id:rideId
+    },{
+        status:'accepted',
+        captain:captainId,
+    },{
+        new:true
+    }).populate('user');
+
+        if(!ride){
+            throw new Error('Ride is not found');
+        }
+
+        return ride;
+
+}

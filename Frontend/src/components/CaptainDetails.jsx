@@ -3,7 +3,7 @@ import { CaptainDataContext } from '../context/Captaincontext.jsx'
 
 function CaptainDetails() {
   const { captain } = useContext(CaptainDataContext);
-   console.log(captain);
+  
    
   if (!captain) {
     return <div>Loading...</div>;
