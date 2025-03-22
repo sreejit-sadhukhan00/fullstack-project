@@ -17,7 +17,7 @@ function VehiclePanel({setvehiclepanel,setconfirmedvehiclepanel,setimage,fare,se
 <div onClick={()=>{
   setvehicleType('car');
   setconfirmedvehiclepanel(true);
-  setimage(download.png);
+  setimage('download.png');
 }}  className='flex items-center justify-between p-3 border-2 border-transparent active:border-black  rounded-xl lg:flex lg:items-center lg:gap-4 mb-2 cursor-pointer '>
 {/* Left Section: Image & Details */}
 <div className='flex items-center gap-4 px-3 lg:w-full lg:flex lg:items-center'>

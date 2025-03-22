@@ -1,6 +1,6 @@
 import React from 'react'
 
-function WaitForDriver({image="",setwaitfordriver}) {
+function WaitForDriver({image="",setwaitfordriver,ridedetails}) {
   
   return (
     <div>
@@ -22,8 +22,8 @@ function WaitForDriver({image="",setwaitfordriver}) {
         <img src="download.png" alt="" width={80} className='rounded-full ' />
         </div>
         <div className='text-right '>
-          <h1 className='text-xl font-semibold'>Driver name</h1>
-          <h4 className='text-lg font-bold ml-6'>car number</h4>
+          <h1 className='text-xl font-semibold tracking-tighter'>{ridedetails?.captain.fullname.firstname+" "+ridedetails?.captain.fullname.lastname}</h1>
+          <h4 className='text-lg font-bold ml-6'>{ridedetails?.captain.vehicle.plate}</h4>
           <p className='text-base ml-6 text-gray-500'>car name</p>
         </div>
         </div>
@@ -34,8 +34,8 @@ function WaitForDriver({image="",setwaitfordriver}) {
            className='flex gap-4 items-center address  p-2 border-b-2 border-gray-300'>
            <i className="ri-map-pin-line text-xl font-bold"></i>
            <div>
-            <h3 className='text-lg font-medium text-zinc-700'>567-43/A</h3>
-            <p className='text-base text-zinc-600 -mt-1'>Lorem ipsum dolor sit amet.</p>
+            {/* <h3 className='text-lg font-medium text-zinc-700'>567-43/A</h3> */}
+            <p className='text-base text-zinc-600 -mt-1'>{ridedetails?.pickup}</p>
            </div>
            </div>
            {/* user current location */}
@@ -43,8 +43,8 @@ function WaitForDriver({image="",setwaitfordriver}) {
            className='flex gap-4 items-center p-2 border-b-2 border-gray-300 currentaddress '>
            <i className="ri-map-pin-5-fill text-xl font-bold"></i>
            <div>
-            <h3 className='text-lg font-medium text-zinc-700'>567-43/A</h3>
-            <p className='text-base text-zinc-600 -mt-1'>Lorem ipsum dolor sit amet.</p>
+            {/* <h3 className='text-lg font-medium text-zinc-700'>567-43/A</h3> */}
+            <p className='text-base text-zinc-600 -mt-1'>{ridedetails?.destination}</p>
            </div>
            </div>
            <div
@@ -52,7 +52,7 @@ function WaitForDriver({image="",setwaitfordriver}) {
            >
             <i className="ri-cash-line text-[#6bd192] text-2xl font-bold"></i>
            <div>
-            <h3 className='text-lg font-medium text-zinc-700'>₹198.20</h3>
+            <h3 className='text-lg font-medium text-zinc-700'>₹{ridedetails?.fare}</h3>
             <p className='text-base text-zinc-600 -mt-1'>Cash only</p>
            </div>
            </div>

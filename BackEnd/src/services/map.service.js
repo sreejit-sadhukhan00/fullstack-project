@@ -36,7 +36,6 @@ const getdistancetime = async (origin, destination) => {
 
     try {
         const response = await axios.get(url);
-        console.log("API Response:", response.data);
         if (response.data.status === 'OK') {
             if (response.data.rows[0].elements[0].status === 'ZERO_RESULTS') {
                 throw new Error('No routes found');

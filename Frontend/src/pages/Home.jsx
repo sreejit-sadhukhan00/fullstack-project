@@ -27,6 +27,7 @@ function Home() {
   const [vehicleType, setvehicleType] = useState(null)
   const [ destinationSuggestions, setDestinationSuggestions ] = useState([]);
   const [activefield,setactivefield]=useState(null);
+  const [ridedetails, setridedetails] = useState(null)
   const confirmedvehiclepanelref=useRef(null);
   const vehiclepanelref=useRef(null);
   const vehiclefoundref=useRef(null);
@@ -49,7 +50,10 @@ function Home() {
   },[user]);
 
   socket.on('ride-confirmed',ride=>{
-    console.log('ride confirmed',ride);
+    console.log(ride);
+    setridedetails(ride);
+    setvehicleFound(false);
+    setconfirmedvehiclepanel(false);
     setwaitfordriver(true);
   })
 // to handle the pickup suggetions
@@ -234,6 +238,7 @@ async function createRide(vehicletype) {
         Authorization: `Bearer ${localStorage.getItem('userToken')}`
       }
     });
+  
   } catch (error) {
     console.log(error);
   }
@@ -353,7 +358,9 @@ async function createRide(vehicletype) {
     </div>   
       <div ref={waitingfordriveref}  className='fixed bottom-0 z-[10] min-h-[60%] bg-white w-full px-1 py-6 lg:absolute lg:w-[30%] '
       >
-         <WaitForDriver image={image} setwaitfordriver={setwaitfordriver}/>
+         <WaitForDriver image={image} setwaitfordriver={setwaitfordriver}
+         ridedetails={ridedetails}
+         />
 
     </div>   
 

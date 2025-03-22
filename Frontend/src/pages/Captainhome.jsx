@@ -41,18 +41,24 @@ function Captainhome() {
     };
      const locationInterval=setInterval(updatelocation, 10000);
      updatelocation();
-    // return () => clearInterval(locationInterval);
+
+     const handleNewRide = (data) => {
+      const parsedData = JSON.parse(data);
+      console.log('New Ride Received:', parsedData);
+      setride(parsedData);
+      setcaptainpopup(true);
+    };
+  
+    socket.on('new-ride', handleNewRide);
+   
+    // Cleanup on component unmount to prevent multiple listeners
+  return () => {
+    clearInterval(locationInterval);
+    // socket.off('new-ride', handleNewRide);
+  };
  },[]);
-
-  socket.on('new-ride',(data)=>{
-    const parsedData = JSON.parse(data);
-     setride(parsedData);
-   setcaptainpopup(true);
-    });
-
    
 async function confirmRide(){
-  console.log(ride._id,localStorage.getItem('captainToken'));
   
   const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/confirm`,{
        rideId:ride._id
@@ -62,7 +68,7 @@ async function confirmRide(){
     }
   })
   console.log(response.data);
-  
+  setcaptainpopup(false);
 }    
 
 // gsap animation
@@ -182,3 +188,5 @@ useGSAP(() => {
 }
 
 export default Captainhome;
+
+

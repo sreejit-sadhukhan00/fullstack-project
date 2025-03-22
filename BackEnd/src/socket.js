@@ -14,11 +14,8 @@ export function initializeSocket(server) {
   });
 
   io.on("connection", (socket) => {
-    console.log(`New client connected: ${socket.id}`);
-
     socket.on("join", async (data) => {
       const { userId, userType } = data;
-      console.log(`${userId} joined as ${userType}`);
 
       if (userType === "user") {
         const user = await User.findById(userId);

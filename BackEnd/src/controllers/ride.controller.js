@@ -24,14 +24,13 @@ const createRideController = asynchandler(async (req, res) => {
      
         const pickupCoordinate = await getAddressCoordinate(pickup);
 
-         const captainsInRadius = await getCaptainsInRadius(pickupCoordinate.ltd, pickupCoordinate.lng, 10);
+         const captainsInRadius = await getCaptainsInRadius(pickupCoordinate.ltd, pickupCoordinate.lng, 20);
 
         ride.otp = "";
 
         const ridewithUser = await Ride.findOne({ _id: ride._id }).populate('user').lean();
-
+         
         // Calculate distance and time between pickup and each captain's location
-
         for (const captain of captainsInRadius) {
             const captainLocation = `${captain.location.ltd},${captain.location.lng}`;
             const disttime = await getdistancetime(pickup, captainLocation);
@@ -57,7 +56,6 @@ const getFareController = asynchandler(async (req, res) => {
         throw new ApiError(400, 'Validation Error', errors.array());
     };
     const { pickup, destination } = req.query;
-    console.log(pickup, destination);
     try {
         const fare = await getFare({ pickup, destination });
         if (!fare) {
@@ -83,7 +81,6 @@ const confirmRideController = asynchandler(async (req, res) => {
         if (!ride) {
             throw new ApiError(500, 'Something went Wrong');
         }
-        console.log(ride);
         sendMessageToSocketId(ride.user.socketId, {
             event: "ride-confirmed",
             data: ride
