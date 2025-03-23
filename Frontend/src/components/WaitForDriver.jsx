@@ -1,7 +1,6 @@
 import React from 'react'
 
 function WaitForDriver({image="",setwaitfordriver,ridedetails}) {
-  
   return (
     <div>
     <h5 className='text-center cursor-pointer'
@@ -24,7 +23,6 @@ function WaitForDriver({image="",setwaitfordriver,ridedetails}) {
         <div className='text-right '>
           <h1 className='text-xl font-semibold tracking-tighter'>{ridedetails?.captain.fullname.firstname+" "+ridedetails?.captain.fullname.lastname}</h1>
           <h4 className='text-lg font-bold ml-6'>{ridedetails?.captain.vehicle.plate}</h4>
-          <p className='text-base ml-6 text-gray-500'>car name</p>
         </div>
         </div>
     
@@ -48,13 +46,35 @@ function WaitForDriver({image="",setwaitfordriver,ridedetails}) {
            </div>
            </div>
            <div
-           className='flex gap-4 items-center p-2   paynment '
+           className='flex justify-between  items-center p-2   paynment '
            >
-            <i className="ri-cash-line text-[#6bd192] text-2xl font-bold"></i>
-           <div>
+
+           <div className='flex gap-3 items-center'>
+           <i className="ri-cash-line text-[#6bd192] text-2xl font-bold"></i>
+           <div className='flex flex-col'>
+           
             <h3 className='text-lg font-medium text-zinc-700'>₹{ridedetails?.fare}</h3>
             <p className='text-base text-zinc-600 -mt-1'>Cash only</p>
+            </div>
            </div>
+               
+            <div className='flex flex-col'>
+            <p className='text-2xl font-bold'>Your OTP</p>
+            <div className='flex gap-2 justify-center'>
+            {ridedetails?.otp
+      ? String(ridedetails.otp)
+          .split("")
+          .map((item, index) => (
+            <div
+              key={index}
+              className="w-7 h-6 flex items-center justify-center border border-gray-300 rounded-md text-xl font-semibold bg-gray-100 shadow-sm"
+            >
+              {item}
+            </div>
+          ))
+      : <p className="text-gray-500">Loading OTP...</p>}
+            </div>
+            </div>
            </div>
     </div>
 

@@ -10,6 +10,7 @@ import WaitForDriver from '../components/WaitForDriver';
 import axios from 'axios';
 import { SocketContext } from '../context/SocketContext.jsx';
 import {UserDataContext} from "../context/Usercontext"
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const [pickup, setpickup] = useState('');
@@ -35,6 +36,8 @@ function Home() {
   const { sendMessage, receiveMessage,socket }=useContext(SocketContext);
  const { user} = useContext(UserDataContext);
 
+const navigate=useNavigate();
+
   const submitHandler = (e) => {
     e.preventDefault();
   };
@@ -56,6 +59,16 @@ function Home() {
     setconfirmedvehiclepanel(false);
     setwaitfordriver(true);
   })
+
+socket.on('ride-started',ride=>{
+  console.log(ride);
+  console.log('recieved')
+  setwaitfordriver(false);
+  navigate('/user-riding');
+})
+
+
+
 // to handle the pickup suggetions
     const handlePickupchange=async (e)=>{
       try {

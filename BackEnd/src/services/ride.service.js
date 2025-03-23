@@ -84,7 +84,6 @@ export const confirmRide=async(rideId,captainId)=>{
     },{
         new:true
     }).populate('captain').populate('user').select('+otp').lean();
-       console.log(ride);
         if(!ride){
             throw new Error('Ride is not found');
         }

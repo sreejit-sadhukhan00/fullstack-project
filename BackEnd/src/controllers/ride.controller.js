@@ -36,7 +36,7 @@ const createRideController = asynchandler(async (req, res) => {
             const disttime = await getdistancetime(pickup, captainLocation);
             
             ridewithUser.distance = disttime.distance.text;
-            ridewithUser.duration = disttime.distance.text;
+            ridewithUser.duration = disttime.duration.text;
 
             sendMessageToSocketId(captain.socketId, {
                 event: 'new-ride',
@@ -92,4 +92,40 @@ const confirmRideController = asynchandler(async (req, res) => {
     }
 });
 
-export { createRideController, getFareController, confirmRideController };
+
+
+
+const startRideController=asynchandler(async(req,res)=>{
+      const errors=validationResult(req);
+      if(!errors.isEmpty()){
+        throw new ApiError(400,'Validation Error',errors.array());
+      }
+      const {rideId,otp}=req.query;
+      try {
+        const ride=await Ride.findOne({_id:rideId}).populate('captain').populate('user').select('+otp');
+        if(!ride){
+            throw new ApiError(404,'Ride not found');
+        }
+        
+        if(ride.status!=='accepted'){
+          throw new Error ('Ride is not accepted');
+        }
+        if(ride.otp!=otp){
+            res.status(403).json('Otp is Incorrect');
+        }
+  
+        ride.status='ongoing';
+         await ride.save();
+
+         console.log(`ride details ${ride}`);
+         sendMessageToSocketId(ride.user.socketId,{
+            event:'ride-started',
+            data:ride   
+         }
+         )
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+})
+export { createRideController, getFareController, confirmRideController,startRideController };

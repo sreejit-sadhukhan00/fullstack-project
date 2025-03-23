@@ -54,7 +54,6 @@ function Captainhome() {
     // Cleanup on component unmount to prevent multiple listeners
   return () => {
     clearInterval(locationInterval);
-    // socket.off('new-ride', handleNewRide);
   };
  },[]);
    
@@ -67,7 +66,7 @@ async function confirmRide(){
       Authorization:`Bearer ${localStorage.getItem('captainToken')}`
     }
   })
-  console.log(response.data);
+  setride(response.data.data);
   setcaptainpopup(false);
 }    
 
@@ -179,7 +178,7 @@ useGSAP(() => {
   lg:fixed lg:w-[30%] lg:left-[70%] left-0 overflow-hidden'
       >
          <ConfirmedRidePopup setconfirmridepopup={setconfirmridepopup} setcaptainpopup={setcaptainpopup}
-        
+          ride={ride}
          />
     </div> 
         </div>
