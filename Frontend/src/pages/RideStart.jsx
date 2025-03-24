@@ -1,65 +1,70 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
+import {React,useContext} from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { SocketContext } from '../context/SocketContext.jsx';
+  const { sendMessage, receiveMessage, socket } = useContext(SocketContext);
 function RideStart() {
+  const location = useLocation();
+  const { ride } = location.state || {}; // Access the ride data from state
+  console.log(ride);
+
   return (
     <div>
-        <div className='fixed h-12 w-12 text-3xl mt-3 ml-3 rounded-full bg-amber-100 flex items-center justify-center'>
-          <Link to='/home'>
-            <i className='ri-home-line font-bold'></i>
-          </Link>
-        </div>
-        <div className='h-screen flex flex-col lg:flex-row lg:justify-end'>
-      {/* Left Side: Image */}
-      <div className='h-[40%] lg:h-full w-full lg:w-[70%]'>
-        <img
-          className='h-full w-full object-cover'
-          src='https://simonpan.com/wp-content/themes/sp_portfolio/assets/uber-challenge.jpg'
-          alt='Ride start banner'
-        />
+      <div className='fixed h-12 w-12 text-3xl mt-3 ml-3 rounded-full bg-amber-100 flex items-center justify-center'>
+        <Link to='/home'>
+          <i className='ri-home-line font-bold'></i>
+        </Link>
       </div>
-
-      {/* Right Side: Content */}
-      <div className='h-[60%] lg:h-full w-full lg:w-[30%] p-6 flex flex-col justify-center bg-white'>
-       
-
-        {/* Driver Info */}
-        <div className='details w-full flex flex-col gap-8 mt-4 lg:h-1/2'>
-          <div className='flex justify-between items-center w-full'>
-            <div>
-              <img src='download.png' alt='Driver' width={80} className='rounded-full' />
-            </div>
-            <div className='text-right'>
-              <h1 className='text-xl font-semibold'>Driver name</h1>
-              <h4 className='text-lg font-bold ml-6'>Car number</h4>
-              <p className='text-base ml-6 text-gray-500'>Car name</p>
-            </div>
-          </div>
-
-          {/* User destination location */}
-          <div className='flex gap-4 items-center p-2 border-b-2 border-gray-300'>
-            <i className='ri-map-pin-line text-xl font-bold'></i>
-            <div>
-              <h3 className='text-lg font-medium text-zinc-700'>567-43/A</h3>
-              <p className='text-base text-zinc-600 -mt-1'>Lorem ipsum dolor sit amet.</p>
-            </div>
-          </div>
-
-          {/* Payment section */}
-          <div className='flex gap-4 items-center p-2 lg:border-b-2 lg:border-gray-300'>
-            <i className='ri-cash-line text-[#0ca547] text-2xl font-bold'></i>
-            <div>
-              <h3 className='text-lg font-medium text-zinc-700'>₹198.20</h3>
-              <p className='text-base text-zinc-600 -mt-1'>Cash only</p>
-            </div>
-          </div>
+      <div className='h-screen flex flex-col lg:flex-row lg:justify-end'>
+        {/* Left Side: Image */}
+        <div className='h-[40%] lg:h-full w-full lg:w-[70%]'>
+          <img
+            className='h-full w-full object-cover'
+            src='https://simonpan.com/wp-content/themes/sp_portfolio/assets/uber-challenge.jpg'
+            alt='Ride start banner'
+          />
         </div>
 
-        <button className='w-full bg-green-500 p-1 rounded-3xl cursor-pointer text-xl text-white font-medium mt-6'>
-          Payment
-        </button>
+        {/* Right Side: Content */}
+        <div className='h-[60%] lg:h-full w-full lg:w-[30%] p-6 flex flex-col justify-center bg-white'>
+          {/* Driver Info */}
+          <div className='details w-full flex flex-col gap-8 mt-4 lg:h-1/2'>
+            <div className='flex justify-between items-center w-full'>
+              <div>
+                <img src='download.png' alt='Driver' width={80} className='rounded-full' />
+              </div>
+              <div className='text-right'>
+                <h1 className='text-xl font-semibold'>{ride?.captain.fullname.firstname + " " + ride?.captain.fullname.lastname}</h1>
+                <h4 className='text-lg text-gray-500 font-bold ml-6'>{ride?.captain.vehicle.plate}</h4>
+              </div>
+            </div>
+
+            {/* User destination location */}
+            <div className='flex gap-4 items-center p-2 border-b-2 border-gray-300'>
+             
+              <div className='flex flex-col gap-3'> 
+              <h1 className='text-3xl font-bold tracking-tight'> Destination :</h1>
+                <div className='flex gap-2 items-center'>
+                <i className='ri-map-pin-line text-xl font-bold'></i>
+                <p className='text-base text-zinc-600 -mt-1'>{ride?.destination}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Payment section */}
+            <div className='flex gap-4 items-center p-2 lg:border-b-2 lg:border-gray-300'>
+              <i className='ri-cash-line text-[#0ca547] text-2xl font-bold'></i>
+              <div>
+                <h3 className='text-lg font-medium text-zinc-700'>₹{ride?.fare}</h3>
+                <p className='text-base text-zinc-600 -mt-1'>Cash only</p>
+              </div>
+            </div>
+          </div>
+
+          <button className='w-full bg-green-500 p-1 rounded-3xl cursor-pointer text-xl text-white font-medium mt-6'>
+            Payment
+          </button>
+        </div>
       </div>
-    </div>
     </div>
   );
 }

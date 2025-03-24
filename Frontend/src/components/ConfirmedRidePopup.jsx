@@ -8,31 +8,28 @@ function ConfirmedRidePopup({setconfirmridepopup,setcaptainpopup,ride}) {
 const [otp, setotp] = useState()
  const navigate=useNavigate();
 
-const submitHandler=async(e)=>{
+ const submitHandler = async (e) => {
   e.preventDefault();
-  const response={};
-   try {
-       response=await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/start-ride`,{
-        params:{
-        rideId:ride._id,
-        otp:otp
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/start-ride`, {
+      params: {
+        rideId: ride._id,
+        otp: otp,
       },
-      
-        headers:{
-          Authorization:`Bearer ${localStorage.getItem("captainToken")}`
-        }
-      });
-   }
-    catch (error) {
-    console.log(error);
-   }
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("captainToken")}`,
+      },
+    });
+    if (response.status === 200) {
+      setconfirmridepopup(false);
+      setcaptainpopup(false);
+      navigate("/captain-riding",{ state: { ride: response.data } });
+    }
+  } catch (error) {
+    console.error("Error:", error.response ? error.response.data : error.message);
+  }
+};
 
-   if(response.status===200){
-    setconfirmridepopup(false);
-    setcaptainpopup(false);
-    navigate("/captain-home");
-   }
-}
 
   return (
     <div className=''>

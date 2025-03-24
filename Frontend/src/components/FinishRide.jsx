@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
-function FinishRide({setfinishRidePanel}) {
+function FinishRide({setfinishRidePanel,ride}) {
   return (
     <div className=''>
         <h5 className='text-center cursor-pointer'
@@ -20,9 +20,9 @@ function FinishRide({setfinishRidePanel}) {
     <div className='flex items-center justify-between mr-4 ml-4  rounded-lg p-2 '>
         <div className='flex items-center justify-center gap-3'>
             <img src="https://cdn.pixabay.com/photo/2015/03/04/22/35/avatar-659652_640.png" alt="" className='h-12 rounded-full object-cover'/>
-            <h2 className='text-lg font-medium'>Sayan Patel</h2>
+            <h2 className='text-lg font-medium'>{ride?.ride.user.fullname.firstname+" "+ride?.ride.user.fullname.lastname}</h2>
         </div>
-        <h5 className='text-xl text-gray-400'>Reached Destination</h5>
+        <h5 className='text-xl text-gray-700'>Reached Destination</h5>
     </div>
     <div className='flex gap-2 justify-between items-center flex-col'>
     <img src="" alt="" width={220} />
@@ -32,8 +32,8 @@ function FinishRide({setfinishRidePanel}) {
            className='flex gap-4 items-center address  p-1 border-b-2 border-gray-300'>
            <i className="ri-map-pin-line text-xl font-bold"></i>
            <div>
-            <h3 className='text-lg font-medium text-zinc-700'>567-43/A</h3>
-            <p className='text-base text-zinc-600 '>Lorem ipsum dolor sit amet.</p>
+            {/* <h3 className='text-lg font-medium text-zinc-700'>567-43/A</h3> */}
+            <p className='text-base text-zinc-600 '>{ride?.ride.pickup}</p>
            </div>
            </div>
            {/* user current location */}
@@ -41,8 +41,8 @@ function FinishRide({setfinishRidePanel}) {
            className='flex gap-4 items-center p-2 border-b-2 border-gray-300 currentaddress '>
            <i className="ri-map-pin-5-fill text-xl font-bold"></i>
            <div>
-            <h3 className='text-lg font-medium text-zinc-700'>567-43/A</h3>
-            <p className='text-base text-zinc-600 -mt-1'>Lorem ipsum dolor sit amet.</p>
+            {/* <h3 className='text-lg font-medium text-zinc-700'>567-43/A</h3> */}
+            <p className='text-base text-zinc-600 -mt-1'>{ride?.ride.destination}</p>
            </div>
            </div>
            <div
@@ -50,7 +50,7 @@ function FinishRide({setfinishRidePanel}) {
            >
             <i className="ri-cash-line text-[#6bd192] text-2xl font-bold"></i>
            <div>
-            <h3 className='text-lg font-medium text-zinc-700'>₹198.20</h3>
+            <h3 className='text-lg font-medium text-zinc-700'>₹{ride?.ride.fare}</h3>
             <p className='text-base text-zinc-600 -mt-1'>Cash only</p>
            </div>
            </div>

@@ -1,7 +1,7 @@
 import express from 'express';
 const router=express.Router();
 import {body,query} from "express-validator";
-import { createRideController, getFareController,confirmRideController,startRideController } from '../controllers/ride.controller.js';
+import { createRideController, getFareController,confirmRideController,startRideController,endRideController} from '../controllers/ride.controller.js';
 import { authCaptain, authUser } from '../Middlewares/auth.middleware.js';
 router.post('/create-ride',
     authUser,
@@ -26,5 +26,9 @@ router.get('/start-ride',authCaptain,
     startRideController
 )
 
+router.post('/end-ride',authCaptain,
+    body('rideId').isMongoId().withMessage("Invalid Ride"),
+    endRideController
+)
 
 export default router;
