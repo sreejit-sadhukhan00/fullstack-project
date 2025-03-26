@@ -1,12 +1,27 @@
-import {React,useContext} from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import {React,useContext, useEffect} from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { SocketContext } from '../context/SocketContext.jsx';
-  const { sendMessage, receiveMessage, socket } = useContext(SocketContext);
+import LiveTracking from '../components/LiveTracking.jsx';
 function RideStart() {
+  const {  socket } = useContext(SocketContext);
   const location = useLocation();
   const { ride } = location.state || {}; // Access the ride data from state
-  console.log(ride);
+   const navigate=useNavigate();
 
+  //  ending the ride
+
+   useEffect(() => {
+     const handleRideComplete=()=>{
+      navigate('/home');
+     }
+       console.log('reached')
+     socket.on('ride-completed',handleRideComplete)
+     
+     return ()=>{
+        socket.off('ride-completed',handleRideComplete)
+     }
+   }, [socket,navigate])
+   
   return (
     <div>
       <div className='fixed h-12 w-12 text-3xl mt-3 ml-3 rounded-full bg-amber-100 flex items-center justify-center'>
@@ -17,11 +32,7 @@ function RideStart() {
       <div className='h-screen flex flex-col lg:flex-row lg:justify-end'>
         {/* Left Side: Image */}
         <div className='h-[40%] lg:h-full w-full lg:w-[70%]'>
-          <img
-            className='h-full w-full object-cover'
-            src='https://simonpan.com/wp-content/themes/sp_portfolio/assets/uber-challenge.jpg'
-            alt='Ride start banner'
-          />
+          <LiveTracking/>
         </div>
 
         {/* Right Side: Content */}
@@ -30,7 +41,7 @@ function RideStart() {
           <div className='details w-full flex flex-col gap-8 mt-4 lg:h-1/2'>
             <div className='flex justify-between items-center w-full'>
               <div>
-                <img src='download.png' alt='Driver' width={80} className='rounded-full' />
+                <img src='public/download.png' alt='Driver' width={80} className='rounded-full' />
               </div>
               <div className='text-right'>
                 <h1 className='text-xl font-semibold'>{ride?.captain.fullname.firstname + " " + ride?.captain.fullname.lastname}</h1>

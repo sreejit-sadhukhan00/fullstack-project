@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import FinishRide from '../components/FinishRide';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-
+import LiveTracking from '../components/LiveTracking.jsx'; 
 function CaptainRiding() {
   const location = useLocation();
   const { ride } = location.state || {}; // Access the ride data from state
@@ -50,16 +50,14 @@ function CaptainRiding() {
         <div className='h-screen flex flex-col lg:flex-row lg:justify-end '>
           {/* Left Side: Large banner image */}
           <div className='h-4/5 lg:h-full w-full lg:w-[70%]'>
-            <img
-              className='h-full w-full object-cover'
-              src='https://simonpan.com/wp-content/themes/sp_portfolio/assets/uber-challenge.jpg'
-              alt='Ride start banner'
-            />
+            <LiveTracking/>
           </div>
 
           <div className='bg-yellow-400 h-1/5 lg:h-[30%] w-full lg:w-[30%] p-6 relative bottom-0 lg:top-60  rounded-lg'>
             <h5 className='text-center cursor-pointer'>
-              <i className="ri-arrow-up-wide-line text-2xl font-bold text-black"></i>
+              <i 
+              onClick={()=>setfinishRidePanel(true)}
+              className="ri-arrow-up-wide-line text-2xl font-bold text-black"></i>
             </h5>
             <div className=' flex  justify-between items-center  '>
               <div className='flex flex-col items-start justify-around  gap-3'>

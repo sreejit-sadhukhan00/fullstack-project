@@ -11,6 +11,7 @@ import axios from 'axios';
 import { SocketContext } from '../context/SocketContext.jsx';
 import { UserDataContext } from "../context/Usercontext";
 import { useNavigate } from 'react-router-dom';
+import LiveTracking from '../components/LiveTracking.jsx';
 
 function Home() {
   const [pickup, setpickup] = useState('');
@@ -260,15 +261,19 @@ function Home() {
           setvehiclepanel(false);
         }}
         className='h-screen w-screen lg:w-[70%]'>
-        <h1 className="text-5xl font-bold absolute left-5 top-5 text-[#FFCA20]">TaxiGo</h1>
-        <img className='h-full w-full object-cover' src="https://simonpan.com/wp-content/themes/sp_portfolio/assets/uber-challenge.jpg" alt="" />
+        <h1 className="text-5xl font-bold absolute left-5 top-5 text-[#FFCA20]"
+        style={{ pointerEvents: 'auto' }}
+        >TaxiGo</h1>
+        <LiveTracking/>
       </div>
 
       {/* Right Side: Form */}
-      <div className='absolute top-0 h-screen w-full flex flex-col justify-end lg:relative lg:w-[30%] lg:h-full lg:flex lg:justify-center lg:bg-white '>
+      <div className={`absolute top-0 h-screen w-full flex flex-col justify-end lg:relative lg:w-[30%] lg:h-full lg:flex lg:justify-center lg:bg-white ${
+    inputboxpos === 1 ? 'pointer-events-auto' : 'pointer-events-none'
+  }`}  >
 
         {/* Form Container */}
-        <div className='h-[30%] lg:h-auto p-8  bg-white relative  '>
+        <div className='h-[30%] lg:h-auto p-8  bg-white relative  ' style={{ pointerEvents: 'auto' }}>
           {/* Close Icon */}
           <h5 ref={panelcloseref} className='absolute top-6 left-1 text-xl font-semibold opacity-0 transition-opacity duration-300'>
             <i className="ri-arrow-down-wide-line cursor-pointer"

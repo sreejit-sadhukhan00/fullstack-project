@@ -8,7 +8,7 @@ import CaptainPopUp from '../components/CaptainPopUp';
 import ConfirmedRidePopup from '../components/ConfirmedRidePopup';
 import { SocketContext } from '../context/SocketContext';
 import { CaptainDataContext } from '../context/Captaincontext';
-
+import LiveTracking from '../components/LiveTracking.jsx';
 
 function Captainhome() {
   const [captainpopup, setcaptainpopup] = useState(false);
@@ -146,11 +146,7 @@ useGSAP(() => {
         <div className='h-screen flex flex-col lg:flex-row lg:justify-end '>
           {/* Left Side: Large banner image */}
           <div className='h-3/5 lg:h-full w-full lg:w-[70%]'>
-            <img
-              className='h-full w-full object-cover'
-              src='https://simonpan.com/wp-content/themes/sp_portfolio/assets/uber-challenge.jpg'
-              alt='Ride start banner'
-            />
+            <LiveTracking/>
           </div>
     
           {/* Right Side: Driver Info and Stats */}

@@ -112,7 +112,7 @@ const startRideController = asynchandler(async (req, res) => {
 
         // Calculate distance and time between captain's location and pickup location
         const captainLocation = `${ride.captain.location.ltd},${ride.captain.location.lng}`;
-        const disttime = await getdistancetime(captainLocation, ride.pickup);
+        const disttime = await getdistancetime(captainLocation, ride.destination);
 
         ride.status = 'ongoing';
         await ride.save();
@@ -136,15 +136,15 @@ const startRideController = asynchandler(async (req, res) => {
 
 const endRideController=asynchandler(async(req,res)=>{
     const errors=validationResult(req);
+    const {rideId}=req.body;
     if(!errors.isEmpty()){
         throw new ApiError(400,'Validation Error',errors.array());
     }
 
-   const {rideId}=req.body;
-
+  
    try{
-    const ride=await Ride.findOne({rideId,
-        captain:req.captain._id
+    const ride=await Ride.findOne({_id: rideId,
+        captain: req.captain._id
     }).populate('captain').populate('user');
 
     if(!ride){
