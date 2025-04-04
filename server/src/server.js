@@ -12,3 +12,5 @@ app.get('/', (req, res) => {
 server.listen(port, () => {
   console.log("listening on port:", port);
 });
+
+export default server;
