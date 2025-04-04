@@ -10,7 +10,7 @@ function Start() {
       <span className='flex justify-start gap-1items-center'><img src="/public/depositphotos_235391478-stock-illustration-compact-car-drive-icon-simple-removebg-preview.png" alt="" className='w-20'/> <h1 className="text-5xl font-bold ml-4 pt-5 text-black">TaxiGo</h1></span>
 
       <div className="bg-white p-6 rounded-md shadow-lg">
-        <h2 className="text-3xl font-semibold select-none">Get Started With TaxiGeo</h2>
+        <h2 className="text-3xl font-semibold select-none">Get Started With TaxiGo</h2>
         <Link to="/login" className="flex items-center text-xl justify-center w-full bg-black text-white py-3 rounded-md mt-4 hover:bg-gray-900 hover:font-bold transition duration-200">
           Continue
         </Link>

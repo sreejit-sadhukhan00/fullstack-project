@@ -1,62 +1,85 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
- import "@fontsource/poppins"; // Import Poppins font
- import {CaptainDataContext} from '../context/Captaincontext'
+import "@fontsource/poppins"; // Import Poppins font
+import {CaptainDataContext} from '../context/Captaincontext'
 import axios from "axios";
+// Import toast library
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function CaptainSignup() {
 const [firstname, setfirstname] = useState('')
   const [lastname, setlastname] = useState('')
   const [email, setEmail] = useState('')
-   const[password,setPassword]=useState('')
+  const[password,setPassword]=useState('')
   const[color,setcolor]=useState('')
   const[plate,setplate]=useState('')
   const[capacity,setcapacity]=useState('')
   const[vehicleType,setvehicleType]=useState('')
-   const navigate=useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate=useNavigate();
     
   const{captain,setcaptain}=useContext(CaptainDataContext);
   const submitHandler=async(e)=>{
     e.preventDefault();
+    setIsLoading(true);
       
-   const newCaptain={
-    fullname:{
-      firstname:firstname,
+    const newCaptain={
+      fullname:{
+        firstname:firstname,
         lastname:lastname
       },
       email:email,
       password:password,
       vehicle: {
-    color: color,
-    plate: plate,
-    capacity:capacity,
-    vehicleType: vehicleType
-  }
-      
+        color: color,
+        plate: plate,
+        capacity:capacity,
+        vehicleType: vehicleType
+      }
     }
-     
-    const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/captain/register`,newCaptain);
     
-    if(response.status===200){
-      const data=response.data.data;
-      localStorage.setItem('token',data.token);
-      setcaptain(data); 
-     navigate('/captain-home');
+    try {
+      const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/captain/register`,newCaptain);
+      
+      if(response.status===200){
+        const data=response.data.data;
+        localStorage.setItem('token',data.token);
+        setcaptain(data); 
+        navigate('/captain-home');
+      }
+      setfirstname('');
+      setlastname('');
+      setEmail('');
+      setPassword('');
+      setcapacity('');
+      setcolor('');
+      setplate('');
+      setvehicleType('');
+    } catch (error) {
+      console.log(error.message);
+      toast.error(
+        error.response?.data?.message || 'Registration failed. Please try again.',
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        }
+      );
+    } finally {
+      setIsLoading(false);
     }
-    setfirstname('');
-    setlastname('');
-    setEmail('');
-    setPassword('');
-    setcapacity('');
-    setcolor('');
-    setplate('');
-    setvehicleType('');
-}
+  }
 
 
 
   return (
     <div className="p-10 flex flex-col justify-between lg:w-1/3 mx-auto my-auto lg:mt-6 h-screen font-poppins">
+        <ToastContainer />
         <div>
         <div className='flex justify-center items-center'>
             <img src="https://png.pngtree.com/png-vector/20241009/ourmid/pngtree-black-and-yellow-motorcycle-icon-png-image_14003057.png" alt="" className='w-24' />
