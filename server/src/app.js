@@ -30,8 +30,8 @@ connectDb();
  import  mapRouter from './routes/maps.routes.js'
  import rideRouter from './routes/ride.route.js'
 //  ROUTE DECLARATION
-  app.use('/users',userRouter);
-  app.use('/captain',captainRouter);
-  app.use('/maps',mapRouter);
-  app.use('/rides',rideRouter);
+  app.use('/api/users',userRouter);
+  app.use('/api/captain',captainRouter);
+  app.use('/api/maps',mapRouter);
+  app.use('/api/rides',rideRouter);
 export {app}
