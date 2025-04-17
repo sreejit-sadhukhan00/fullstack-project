@@ -7,7 +7,7 @@ const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io(import.meta.env.VITE_BASE_URL || "http://localhost:5000", {
+    const newSocket = io(import.meta.env.VITE_SOCKET_BASE_URL || "http://localhost:3000/", {
       withCredentials: true,
       transports: ["websocket"],
     });
